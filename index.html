@@ -1,5 +1,8 @@
+<meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Planner 2.0</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap');
 
@@ -328,12 +331,14 @@ body.dark .toets-dur-opt:has(input:checked){background:rgba(74,128,200,.18);}
 .edit-banner.show{display:block;}
 
 /* ── STUDENT BAR ─────────────────────────────────── */
+.student-bar-wrap{padding:.6rem 1rem .3rem;}
 .student-bar{
-  background:#7A3500;padding:.55rem 1.2rem;
-  display:flex;align-items:center;gap:.75rem;
-  border-bottom:2px solid #5A2800;
+  background:#7A3500;padding:.5rem .9rem;
+  display:flex;align-items:center;gap:.6rem;
+  border-radius:14px;
+  box-shadow:0 2px 10px rgba(0,0,0,.18);
 }
-body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
+body.dark .student-bar{background:#3D1C00;}
 .stu-nav{
   background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);
   border-radius:7px;width:2rem;height:2rem;font-size:1.1rem;
@@ -446,7 +451,8 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
 .print-modal-foot{display:flex;gap:.6rem;margin-top:.85rem;justify-content:flex-end;flex-shrink:0;flex-wrap:wrap;}
 
 /* ── WEEK NAV ────────────────────────────────────── */
-.week-nav{background:var(--surface);padding:.6rem 1.2rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);gap:.5rem;}
+.week-nav-wrap{display:flex;justify-content:center;padding:.3rem 1rem .1rem;}
+.week-nav{background:var(--ground);padding:.6rem 1rem;display:flex;align-items:center;justify-content:space-between;gap:.5rem;border-radius:14px;width:50%;min-width:320px;}
 .wk-center{text-align:center;flex:1;}
 .wk-num{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:700;color:var(--brand);letter-spacing:-.2px;}
 .wk-range{font-size:.71rem;color:var(--tx3);margin-top:.08rem;}
@@ -461,6 +467,32 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
 
 /* ── MONTH GRID ──────────────────────────────────── */
 .month-wrap{overflow-x:auto;}
+/* ── 4-weken view ── */
+.four-wk-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:6px;padding:6px;
+  box-sizing:border-box;
+}
+.four-wk-cell{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:8px;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.four-wk-hdr{
+  background:var(--brand);color:#fff;
+  padding:.3rem .7rem;font-size:.75rem;font-weight:700;
+  font-family:'Outfit',sans-serif;letter-spacing:.02em;
+  flex-shrink:0;
+}
+.four-wk-body{overflow:auto;flex:1;}
+.four-wk-body .sched-grid{font-size:.72rem;}
+.four-wk-body .dc{min-height:28px;}
+.four-wk-body .th{padding:.18rem .3rem;font-size:.65rem;}
+.four-wk-body .rh{padding:.15rem .3rem;font-size:.63rem;}
+.four-wk-body .cell-lbl{font-size:.44rem;}
+@media(max-width:700px){
+  .four-wk-grid{grid-template-columns:1fr;}
+}
 .month-grid{display:grid;}
 .mgh{background:var(--brand);color:rgba(255,255,255,.9);padding:.5rem .4rem;text-align:center;font-family:'Outfit',sans-serif;font-weight:600;font-size:.75rem;position:sticky;top:0;z-index:10;border-bottom:1px solid rgba(255,255,255,.08);}
 .mgh.mgh-we{border-left:2px solid rgba(255,255,255,.22);}
@@ -501,12 +533,49 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
 .dag-dot{width:16px;height:16px;border-radius:50%;border:1.5px solid rgba(255,255,255,.65);cursor:pointer;flex-shrink:0;transition:transform .1s,box-shadow .1s;box-sizing:border-box;}
 .dag-dot:hover{transform:scale(1.3);box-shadow:0 0 0 2px rgba(0,0,0,.22);}
 .dag-dot.dag-dot-empty{background:var(--surf-2);border:1.5px solid var(--border);}
-.legend{background:var(--surface);padding:.38rem 1.2rem;display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;border-bottom:2px solid var(--border);font-size:.71rem;color:var(--tx2);}
+.legend{background:var(--ground);padding:.38rem 1rem;display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;font-size:.71rem;color:var(--tx2);border-radius:14px;}
+.legend-wrap{padding:.1rem 1rem .05rem;}
 .leg{display:flex;align-items:center;gap:.35rem;}
 .leg-sw{width:11px;height:11px;border-radius:3px;flex-shrink:0;}
 
+/* ── DISPLAY TAKEN PANEL ─────────────────────────── */
+.display-content-row{display:flex;flex:1;overflow:hidden;align-items:flex-start;}
+.display-taken-panel{
+  width:240px;flex-shrink:0;padding:1rem 0 1rem 1rem;
+  overflow-y:auto;height:100%;
+  align-self:stretch;
+}
+.display-taken-inner{
+  background:var(--surface);border:1.5px solid var(--border-s);
+  border-radius:14px;padding:.9rem .95rem;
+  box-shadow:0 1px 6px rgba(0,0,0,.07);
+  min-height:100px;
+}
+.display-taken-title{
+  font-family:'Outfit',sans-serif;font-size:.88rem;font-weight:700;
+  color:var(--tx);margin-bottom:.7rem;
+  padding-bottom:.5rem;border-bottom:1.5px solid var(--border);
+}
+.display-taken-vak{margin-bottom:.65rem;}
+.display-taken-vak-name{
+  font-size:.73rem;font-weight:700;color:var(--brand);
+  text-transform:uppercase;letter-spacing:.07em;margin-bottom:.28rem;
+}
+.display-taken-item{
+  background:var(--surf-2);border:1px solid var(--border);
+  border-radius:8px;padding:.35rem .6rem;
+  font-size:.78rem;color:var(--tx);margin-bottom:.22rem;
+  display:flex;align-items:flex-start;gap:.4rem;
+}
+.display-taken-les{
+  font-weight:700;color:var(--tx2);white-space:nowrap;flex-shrink:0;
+  font-size:.73rem;margin-top:.05rem;
+}
+.display-taken-opm{color:var(--tx);line-height:1.3;word-break:break-word;}
+.display-taken-empty{font-size:.78rem;color:var(--tx3);font-style:italic;}
+
 /* ── SCHEDULE ────────────────────────────────────── */
-.sched-area{flex:1;overflow:auto;padding:1rem 1rem 2.5rem;}
+.sched-area{flex:1;overflow:auto;padding:.3rem 1rem 2.5rem;}
 .sched-sec-title{font-family:'Outfit',sans-serif;font-size:.71rem;font-weight:700;color:var(--tx3);letter-spacing:.12em;text-transform:uppercase;padding:.9rem .2rem .45rem;}
 .sched-wrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:490px;box-shadow:0 1px 8px rgba(0,0,0,.07);margin-bottom:1rem;}
 .sched-grid{display:grid;}
@@ -540,30 +609,132 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
 .dc[data-c="orange"]{background:var(--o-bg);}
 .dc[data-c="rose"]  {background:var(--ro-bg);}
 .dc.day-vakantie,.dc.day-studiedag{background:var(--pause-bg)!important;cursor:default!important;}
-.cell-lbl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;letter-spacing:.03em;pointer-events:none;}
-/* In bewerkmodus: label iets lager zodat picker ruimte heeft */
-.dc.editable .cell-lbl{padding-top:20px;}
-.dc[data-c="yellow"] .cell-lbl{padding-right:18px;}
-.dc[data-c="green"]  .cell-lbl{color:var(--g-tx);}
-.dc[data-c="red"]    .cell-lbl{color:var(--r-tx);}
-.dc[data-c="blue"]   .cell-lbl{color:var(--b-tx);}
-.dc[data-c="purple"] .cell-lbl{color:var(--p-tx);}
-.dc[data-c="yellow"] .cell-lbl{color:var(--y-tx);}
-.dc[data-c="orange"] .cell-lbl{color:var(--o-tx);}
-.dc[data-c="rose"]   .cell-lbl{color:var(--ro-tx);}
+/* ── Cel-label: afkorting badge linkerbovenhoek ── */
+.cell-lbl{
+  position:absolute;top:3px;left:3px;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:.52rem;font-weight:800;letter-spacing:.02em;
+  pointer-events:none;z-index:1;
+  border-radius:5px;padding:1px 4px;min-height:13px;
+  color:#fff;
+}
+.dc[data-c="green"]  .cell-lbl{background:#2D8B50;}
+.dc[data-c="red"]    .cell-lbl{background:#C0392B;}
+.dc[data-c="blue"]   .cell-lbl{background:#2471A3;}
+.dc[data-c="purple"] .cell-lbl{background:#7D3C98;}
+.dc[data-c="yellow"] .cell-lbl{background:#A07800;color:#fff;}
+.dc[data-c="orange"] .cell-lbl{background:#C05818;}
+.dc[data-c="rose"]   .cell-lbl{background:#B01010;}
+/* Verberg label in bewerkmodus zodat color-picker zichtbaar blijft */
+.dc.editable .cell-lbl{display:none;}
 .cell-note{position:absolute;bottom:0;left:0;right:0;font-size:.58rem;font-weight:600;
   color:inherit;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;pointer-events:none;
   text-align:center;line-height:1.4;padding:2px 3px 3px;
   background:rgba(255,255,255,.18);}
-/* Cel-label wat hoger zodat nootbalk onderaan ruimte krijgt */
-.dc[data-c="rose"]   .cell-lbl,
-.dc[data-c="purple"] .cell-lbl,
-.dc[data-c="orange"] .cell-lbl,
-.dc[data-c="yellow"] .cell-lbl,
-.dc[data-c="green"]  .cell-lbl,
-.dc[data-c="red"]    .cell-lbl,
-.dc[data-c="blue"]   .cell-lbl { padding-bottom:16px; }
 .pause-lbl{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:.59rem;color:var(--pause-tx);font-style:italic;letter-spacing:.04em;pointer-events:none;}
+
+/* ══ HUISWERK PANEL ═══════════════════════════════ */
+/* ── Huiswerk zijpaneel ──────────────────────────── */
+#hw-sidebar{
+  display:none;flex-direction:column;
+  width:210px;flex-shrink:0;
+  padding:.65rem 0 1rem .75rem;
+  overflow-y:auto;align-self:stretch;
+}
+#hw-sidebar.open{display:flex;}
+.hw-sidebar-inner{
+  background:var(--surface);border:1.5px solid var(--border-s);
+  border-radius:14px;padding:.85rem .9rem 1rem;
+  box-shadow:0 1px 6px rgba(0,0,0,.07);
+  display:flex;flex-direction:column;gap:.6rem;
+  flex:1;
+}
+.hw-sidebar-title{
+  font-family:'Outfit',sans-serif;font-size:.9rem;font-weight:700;
+  color:var(--tx);padding-bottom:.5rem;
+  border-bottom:1.5px solid var(--border);
+}
+.hw-field-row{display:flex;flex-direction:column;gap:.22rem;}
+.hw-label{font-size:.68rem;font-weight:700;color:var(--tx2);white-space:nowrap;}
+.hw-inp-vak{width:100%;padding:.32rem .5rem;font-size:.82rem;border:1.5px solid var(--border);border-radius:7px;background:var(--surf-2);color:var(--tx);outline:none;}
+.hw-inp-vak:focus{border-color:var(--brand);}
+.hw-inp-opm{width:100%;padding:.32rem .6rem;font-size:.82rem;border:1.5px solid var(--border);border-radius:7px;background:var(--surf-2);color:var(--tx);outline:none;}
+.hw-inp-opm:focus{border-color:var(--brand);}
+.hw-save-btn{width:100%;background:var(--brand);color:#fff;border:none;border-radius:8px;padding:.38rem .85rem;font-size:.8rem;font-weight:700;cursor:pointer;transition:opacity .15s;}
+.hw-save-btn:hover{opacity:.82;}
+.hw-tray{display:flex;flex-direction:column;gap:.38rem;min-height:24px;}
+.hw-tray-label{font-size:.66rem;font-weight:700;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;}
+.hw-tray-empty{font-size:.75rem;color:var(--tx3);font-style:italic;}
+.hw-card{
+  display:flex;align-items:center;gap:.35rem;
+  background:var(--surf-2);border:1.5px solid var(--brand);
+  border-radius:9px;padding:.3rem .6rem .3rem .45rem;
+  font-size:.78rem;font-weight:600;color:var(--tx);
+  cursor:grab;user-select:none;transition:box-shadow .12s,opacity .12s;
+  white-space:nowrap;overflow:hidden;
+}
+.hw-card:hover{box-shadow:0 2px 8px rgba(0,0,0,.14);}
+.hw-card.hw-dragging{opacity:.45;cursor:grabbing;}
+.hw-card-icon{font-size:.95rem;flex-shrink:0;}
+.hw-card-text{overflow:hidden;text-overflow:ellipsis;flex:1;min-width:0;}
+.hw-card-del{background:none;border:none;color:var(--tx3);cursor:pointer;font-size:.78rem;padding:0 0 0 .2rem;line-height:1;transition:color .12s;flex-shrink:0;}
+.hw-card-del:hover{color:#C0392B;}
+/* Toggle button active state */
+#btn-hw-toggle.hw-active{background:var(--brand);color:#fff;}
+/* Drop hover cel */
+.dc.hw-drop-hover{outline:2px dashed var(--brand);outline-offset:-2px;}
+/* ── Huiswerk pictos in cells ── */
+.hw-pictos-wrap{
+  position:absolute;top:2px;right:2px;
+  display:flex;flex-direction:column;align-items:flex-end;gap:2px;
+  z-index:3;pointer-events:auto;
+}
+.hw-picto-dot{
+  display:inline-flex;align-items:center;gap:2px;
+  line-height:1;cursor:default;
+}
+.hw-picto-book{font-size:.78rem;line-height:1;}
+.hw-picto-badge{
+  font-size:.6rem;font-weight:900;line-height:1;
+  background:#111;color:#fff;
+  border-radius:5px;padding:1px 4px;
+  border:1.5px solid #111;
+  white-space:nowrap;letter-spacing:.01em;
+}
+.hw-picto-dot.hw-leerling-own{cursor:pointer;}
+/* Huiswerk detail popup */
+.hw-popup-overlay{
+  position:fixed;inset:0;z-index:8000;
+  background:rgba(0,0,0,.38);display:flex;align-items:center;justify-content:center;
+}
+.hw-popup{
+  background:var(--surface);border-radius:14px;padding:1.2rem 1.4rem;
+  min-width:280px;max-width:340px;box-shadow:0 8px 32px rgba(0,0,0,.22);
+  display:flex;flex-direction:column;gap:.7rem;
+}
+.hw-popup-title{font-weight:800;font-size:1rem;color:var(--tx);}
+.hw-popup-row{display:flex;align-items:center;gap:.5rem;}
+.hw-popup-label{font-size:.72rem;font-weight:700;color:var(--tx2);min-width:52px;}
+.hw-popup-val{font-size:.82rem;color:var(--tx);}
+.hw-popup-edit-inp{flex:1;padding:.3rem .5rem;font-size:.82rem;border:1.5px solid var(--border);border-radius:7px;background:var(--surf-2);color:var(--tx);outline:none;}
+.hw-popup-edit-inp:focus{border-color:var(--brand);}
+.hw-popup-actions{display:flex;gap:.55rem;justify-content:flex-end;margin-top:.3rem;}
+.hw-popup-del-btn{background:none;border:1.5px solid #C0392B;color:#C0392B;border-radius:8px;padding:.32rem .75rem;font-size:.8rem;font-weight:700;cursor:pointer;}
+.hw-popup-del-btn:hover{background:#C0392B;color:#fff;}
+.hw-popup-save-btn{background:var(--brand);color:#fff;border:none;border-radius:8px;padding:.34rem .85rem;font-size:.8rem;font-weight:700;cursor:pointer;}
+.hw-popup-save-btn:hover{opacity:.82;}
+.hw-popup-cancel-btn{background:none;border:1.5px solid var(--border);color:var(--tx2);border-radius:8px;padding:.32rem .75rem;font-size:.8rem;font-weight:600;cursor:pointer;}
+.hw-popup-edit-btn{background:none;border:1.5px solid var(--border);color:var(--tx2);border-radius:8px;padding:.32rem .6rem;font-size:.8rem;cursor:pointer;}
+.hw-popup-edit-btn:hover{border-color:var(--brand);color:var(--brand);}
+/* Huiswerk tooltip (hergebruikt besch-tip stijl) */
+.hw-tip{
+  position:fixed;z-index:9999;
+  background:rgba(30,30,40,.93);color:#fff;
+  font-size:.75rem;font-weight:500;
+  padding:.3rem .7rem;border-radius:7px;
+  pointer-events:none;white-space:pre-wrap;max-width:220px;
+  display:none;
+}
 
 /* ── STD SCHEDULE MODAL ──────────────────────────── */
 .modal-wide{max-width:860px;max-height:88vh;overflow-y:auto;}
@@ -596,6 +767,11 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
 .sdc-time-inp{border:1px solid var(--border-s);border-radius:4px;padding:.18rem .22rem;font-size:.62rem;width:68px;text-align:center;background:var(--surface);color:var(--tx);font-family:inherit;outline:none;transition:border-color .13s;margin-top:.25rem;}
 .sdc-time-inp:focus{border-color:var(--brand);}
 .sdc-time-inp::placeholder{color:var(--tx3);}
+.sdc-vak-sel{border:1px solid var(--g-bd);border-radius:4px;padding:.18rem .22rem;font-size:.62rem;width:100%;background:var(--g-bg);color:var(--g-tx);font-family:inherit;outline:none;cursor:pointer;margin-top:.25rem;font-weight:600;}
+.sdc-vak-sel:focus{border-color:var(--brand);}
+.estu-assign-chip{border:1.5px solid var(--border-s);border-radius:20px;padding:.2rem .65rem;font-size:.75rem;font-weight:600;color:var(--tx2);background:var(--surf-2);cursor:pointer;transition:background .12s,border-color .12s,color .12s;}
+.estu-assign-chip.on{background:var(--brand-light);border-color:var(--brand);color:var(--brand);}
+.estu-assign-chip:hover{border-color:var(--brand-mid);}
 .la-cell-time{font-size:.58rem;font-weight:400;opacity:.75;margin-left:.18rem;}
 .modal-actions{display:flex;gap:.55rem;margin-top:.9rem;}
 .btn-p.sm{width:auto;padding:.65rem 1.7rem;}
@@ -705,8 +881,12 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
   .login-title{font-size:1.7rem;}
   .app-hdr{padding:.65rem .85rem;}
   .hb{font-size:.72rem;padding:.36rem .6rem;}
-  .sched-area{padding:.55rem .55rem 2rem;}
-  .student-bar{padding:.5rem .85rem;}
+  .sched-area{padding:.2rem .55rem 2rem;}
+  .student-bar-wrap{padding:.4rem .6rem .2rem;}
+  .legend-wrap{padding:.1rem .6rem .15rem;}
+  .week-nav-wrap{padding:.25rem .6rem .1rem;}
+  .week-nav{width:100%;min-width:0;}
+  .student-bar{padding:.45rem .7rem;}
   .form-row{grid-template-columns:1fr;}
 }
 @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important;}}
@@ -873,7 +1053,9 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
   body>*{display:none!important;}
   #gesprek-print-area{display:block!important;}
   #verg-print-area{display:block!important;}
+  #sched-print-area{display:block!important;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;}
 }
+#sched-print-area{display:none;}
 #verg-print-area{display:none;}
 .vp-page{font-family:'Outfit',system-ui,sans-serif;font-size:10.5pt;color:#111;padding:16mm 14mm;max-width:190mm;margin:0 auto;}
 .vp-title{font-size:15pt;font-weight:800;color:#C85A00;margin-bottom:1.5mm;}
@@ -892,6 +1074,64 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
 .vp-cat-sect{margin-bottom:3mm;}
 .vp-cat-remark{font-size:9.5pt;padding:1mm 0;border-bottom:.5pt solid #eee;}
 .vp-cat-remark-vw{color:#C85A00;font-style:italic;}
+
+/* ── DISPLAY SCREEN ─────────────────────────────── */
+#screen-display{display:none;min-height:100vh;flex-direction:column;background:var(--ground);}
+#screen-display.show{display:flex;}
+.display-hdr{
+  background:#7A3500;padding:.7rem 1.2rem;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  position:sticky;top:0;z-index:50;
+  box-shadow:0 2px 12px rgba(0,0,0,.22);
+}
+body.dark .display-hdr{background:#3D1C00;}
+.display-hdr-title{
+  font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;
+  color:#fff;letter-spacing:-.2px;
+}
+.display-logout-btn{
+  background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.2);
+  color:#fff;border-radius:8px;padding:.4rem .9rem;font-size:.82rem;font-weight:600;
+  cursor:pointer;transition:background .15s;
+}
+.display-logout-btn:hover{background:rgba(200,40,0,.5);}
+.display-tiles{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:1rem;
+}
+.display-tile{
+  background:var(--surface);border:1.5px solid var(--border);
+  border-radius:16px;padding:1.6rem 1rem;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:.5rem;cursor:pointer;
+  transition:background .15s,border-color .15s,transform .12s,box-shadow .12s;
+  min-height:130px;
+  box-shadow:0 1px 4px rgba(0,0,0,.07);
+  -webkit-user-select:none;user-select:none;
+}
+.display-tile:hover{background:var(--surf-2);border-color:var(--border-s);transform:translateY(-3px);box-shadow:0 4px 16px rgba(0,0,0,.13);}
+.display-tile:active{transform:translateY(-1px);}
+.display-tile-initial{
+  font-family:'Outfit',sans-serif;font-size:2.2rem;font-weight:800;
+  width:2.6rem;height:2.6rem;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--brand-light);color:var(--brand);
+  flex-shrink:0;
+}
+body.dark .display-tile-initial{background:#3A1800;color:#F7941D;}
+.display-tile-name{
+  font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;
+  color:var(--tx);text-align:center;line-height:1.2;
+}
+.display-tile-klass{font-size:.78rem;color:var(--tx3);font-weight:500;}
+.display-back-btn{
+  background:var(--surface);border:1.5px solid var(--border);
+  color:var(--tx2);border-radius:8px;padding:.35rem .8rem;font-size:.82rem;font-weight:600;
+  cursor:pointer;margin-bottom:.2rem;
+  transition:background .15s,border-color .15s;
+}
+.display-back-btn:hover{background:var(--surf-2);border-color:var(--border-s);}
 </style>
 
 
@@ -929,7 +1169,12 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
     <button class="role-tile-sm" onclick="openLogin('ouder')">
       👪&nbsp; Ouder <span style="font-size:.7rem;font-weight:400;opacity:.65;">(geen schoolaccount)</span>
     </button>
-    <div style="text-align:center;color:rgba(255,255,255,.3);font-size:.68rem;margin-top:1.4rem;letter-spacing:.04em;">v1.28</div>
+    <div id="btn-display-login-wrap" style="display:none;margin-top:.6rem;">
+      <button class="role-tile-sm" onclick="openDisplayLogin()" style="background:rgba(255,255,255,.05);border-color:rgba(255,255,255,.1);">
+        🖥️&nbsp; Display <span style="font-size:.7rem;font-weight:400;opacity:.65;">(klasscherm)</span>
+      </button>
+    </div>
+    <div style="text-align:center;color:rgba(255,255,255,.3);font-size:.68rem;margin-top:1.4rem;letter-spacing:.04em;">v2.0</div>
   </div>
 </div>
 
@@ -990,12 +1235,17 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
       </div>
       <div id="hdr-leerling-zone" style="display:none;gap:.45rem;flex-wrap:wrap;align-items:center;">
         <button class="hb" onclick="openLeerlingBeschModal()">👁 Beschikbaarheid docenten</button>
+        <button class="hb" id="btn-hw-toggle" onclick="toggleHwPanel()">👁 Huiswerk</button>
       </div>
       <span id="sync-chip" class="sync-chip" style="display:none;"></span>
       <span id="btn-sb-user" class="hb" style="display:none;cursor:default;"></span>
       <span class="role-pill" id="role-pill"></span>
       <button class="hb" id="btn-admin-header" style="display:none;" onclick="showAdmin()">⚙️ Admin</button>
-      <button class="hb logout" onclick="logout()">Uitloggen</button>
+      <div id="hdr-display-zone" style="display:none;gap:.45rem;align-items:center;">
+        <button class="hb" onclick="displayBack()">← Alle leerlingen</button>
+        <button class="hb logout" onclick="displayLogout()">Uitloggen</button>
+      </div>
+      <button class="hb logout" id="btn-main-logout" onclick="logout()">Uitloggen</button>
     </div>
   </div>
 
@@ -1004,40 +1254,48 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
   </div>
 
   <!-- Student picker -->
+  <div class="student-bar-wrap">
   <div class="student-bar" id="student-bar">
-    <button class="stu-nav" id="stu-prev" onclick="prevStudent()">‹</button>
-    <div class="stu-center">
+    <!-- ← Vorige leerling -->
+    <button class="stu-nav" id="btn-stu-prev" onclick="prevStudent()" title="Vorige leerling">‹</button>
+    <!-- Leerlinginfo (10% naar rechts) -->
+    <div class="stu-center" style="padding-left:10%;">
       <div class="stu-name" id="stu-name-d">—</div>
       <div class="stu-meta" id="stu-meta-d">—</div>
       <div class="stu-vakken" id="stu-vakken"></div>
     </div>
-    <div class="stu-search-wrap" id="stu-search-wrap">
-      <button class="stu-search-btn" onclick="openStuPickModal()">🔍 Zoek leerling</button>
-    </div>
-    <div class="stu-counter" id="stu-counter">—</div>
-    <button class="stu-nav" id="stu-next" onclick="nextStudent()">›</button>
+    <!-- → Volgende leerling -->
+    <button class="stu-nav" id="btn-stu-next" onclick="nextStudent()" title="Volgende leerling">›</button>
+    <!-- Zoek leerling -->
+    <button class="stu-search-btn" id="btn-stu-search" onclick="openStuPickModal()">🔍 Zoek leerling</button>
+    <!-- Edit zone (coach/coordinator) -->
     <div id="stu-edit-zone" style="display:none;gap:.4rem;align-items:center;flex-shrink:0;">
       <button class="stu-hb" id="btn-std-rooster" onclick="openStdModal()">📋 Standaard</button>
       <button class="stu-hb" id="btn-gesprek" onclick="openGesprekModal()" style="display:none;">📝 Coachgesprek</button>
       <button class="stu-hb stu-hb-edit" id="btn-edit" onclick="toggleEdit()">✏️ Aanpassen</button>
     </div>
   </div>
+  </div>
 
+  <div class="week-nav-wrap">
   <div class="week-nav">
-    <button class="nav-btn" id="nav-prev" onclick="navPrev()">‹ Vorige</button>
+    <button class="nav-btn" id="nav-prev" onclick="navPrev()">‹</button>
     <div class="wk-center">
       <div class="wk-num outfit" id="wk-num">Week —</div>
       <div class="wk-range" id="wk-range">—</div>
-      <div style="display:flex;gap:.4rem;justify-content:center;flex-wrap:wrap;">
+      <div style="display:flex;gap:.35rem;justify-content:center;flex-wrap:wrap;">
         <button class="nav-today-btn" id="btn-today" onclick="goToToday()">📍 Vandaag</button>
-        <button class="nav-mode-btn" id="btn-month" onclick="toggleViewMode()">📅 Maandweergave</button>
+        <button class="nav-mode-btn" id="btn-4wk" onclick="toggle4WkMode()">🗓 4 wk</button>
+        <button class="nav-mode-btn" id="btn-month" onclick="toggleMonthMode()">📅 Maand</button>
       </div>
     </div>
-    <button class="nav-btn" id="nav-next" onclick="navNext()">Volgende ›</button>
+    <button class="nav-btn" id="nav-next" onclick="navNext()">›</button>
+  </div>
   </div>
 
   <div class="ctrl-bar"></div>
 
+  <div class="legend-wrap">
   <div class="legend">
     <span style="font-size:.7rem;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-transform:uppercase;">Status:</span>
     <div class="leg"><div class="leg-sw" style="background:#2D8B50"></div>Aanwezig</div>
@@ -1050,12 +1308,45 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
     <div class="leg"><div class="leg-sw" style="background:#D8D8D8;border:1px solid #AAAAAA"></div>Vakantie / Studiedag</div>
     <div style="margin-left:auto;display:flex;gap:.7rem;align-items:center;flex-wrap:wrap;">
       <span style="font-size:.7rem;font-weight:700;color:var(--tx3);letter-spacing:.04em;text-transform:uppercase;">Docenten:</span>
-      <div class="leg"><div class="besch-circle besch-lokaal-leg" style="height:15px;min-width:20px;font-size:.52rem;padding:0 4px;border-radius:8px;background:rgba(255,255,255,.55);border:1.5px solid rgba(0,0,0,.18);color:rgba(0,0,0,.5);display:inline-flex;align-items:center;justify-content:center;font-weight:700;white-space:nowrap;">NE</div>&nbsp;docent in lokaal</div>
-      <div class="leg"><div class="besch-circle besch-les" style="height:15px;min-width:20px;font-size:.52rem;padding:0 4px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-weight:700;white-space:nowrap;">NE</div>&nbsp;docent geeft les</div>
+      <div class="leg"><div class="besch-circle besch-lokaal-leg" style="height:15px;width:15px;border-radius:50%;background:rgba(255,255,255,.55);border:1.5px solid rgba(0,0,0,.18);display:inline-flex;"></div>&nbsp;docent in lokaal</div>
+      <div class="leg"><div class="besch-circle besch-les" style="height:15px;width:15px;border-radius:50%;display:inline-flex;"></div>&nbsp;docent geeft les</div>
     </div>
   </div>
+  </div>
 
-  <div class="sched-area" id="sched-area"></div>
+  <!-- Huiswerk panel (alleen zichtbaar voor leerling, uitklapbaar) -->
+  <div class="display-content-row" id="display-content-row">
+    <!-- Gemaakte Taken panel (alleen display + weekweergave) -->
+    <div class="display-taken-panel" id="display-taken-panel" style="display:none;">
+      <div class="display-taken-inner">
+        <div class="display-taken-title">📖 Gemaakte Taken</div>
+        <div id="display-taken-list"></div>
+      </div>
+    </div>
+    <!-- Huiswerk zijpaneel -->
+    <div id="hw-sidebar">
+      <div class="hw-sidebar-inner">
+        <div class="hw-sidebar-title">📖 Huiswerk</div>
+        <div class="hw-field-row">
+          <span class="hw-label">Vak</span>
+          <select class="hw-inp-vak" id="hw-vak"></select>
+        </div>
+        <div class="hw-field-row">
+          <span class="hw-label">Opmerking</span>
+          <input class="hw-inp-opm" id="hw-inp-opm" type="text" maxlength="20" placeholder="Optioneel, max 20 tekens">
+        </div>
+        <button class="hw-save-btn" onclick="saveHwItem()">+ Kaart aanmaken</button>
+        <div>
+          <div class="hw-tray-label" style="margin-bottom:.35rem;">📋 Sleep naar een uur</div>
+          <div id="hw-tray" class="hw-tray"></div>
+        </div>
+        <div style="font-size:.65rem;color:var(--tx3);line-height:1.5;margin-top:auto;padding-top:.4rem;">
+          💡 Sleep een kaartje naar een uur in de weekplanning om het in te plannen.
+        </div>
+      </div>
+    </div>
+    <div class="sched-area" id="sched-area"></div>
+  </div>
 </div>
 
 <!-- ══ STANDAARDROOSTER MODAL ══════════════════════ -->
@@ -1069,9 +1360,6 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
       <div class="leg"><div class="leg-sw" style="background:#C0392B"></div>Training</div>
       <div class="leg"><div class="leg-sw" style="background:#B01010"></div>Overig</div>
       <div class="leg"><div class="leg-sw" style="background:#2471A3"></div>Rust</div>
-      <div class="leg"><div class="leg-sw" style="background:#7D3C98"></div>Wedstrijd</div>
-      <div class="leg"><div class="leg-sw" style="background:#C8A000"></div>Toets</div>
-      <div class="leg"><div class="leg-sw" style="background:#C05818"></div>Toernooi</div>
     </div>
     <div id="std-grid-ct"></div>
     <div class="modal-actions">
@@ -1178,7 +1466,10 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
       <div class="fw" style="margin-bottom:0">
         <label class="flabel">Klas</label>
         <select class="field-inp" id="estu-class" onchange="onEstuClassChange()" style="margin-bottom:0">
-          <option value="M3">M3</option><option value="M4">M4</option>
+          <option value="H2">H2</option><option value="H3">H3</option>
+          <option value="M3">M3</option>
+          <option value="V2">V2</option><option value="V3">V3</option>
+          <option value="M4">M4</option>
           <option value="H4">H4</option><option value="H5">H5</option>
           <option value="V4">V4</option><option value="V5">V5</option>
           <option value="V6">V6</option>
@@ -1208,6 +1499,7 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
       <div class="pws-admin-dots" id="estu-pws-dots"></div>
     </div>
     <div id="estu-period-ct"></div>
+    <div id="estu-assign-ct" style="margin-top:.75rem;"></div>
     <div class="err-msg" id="estu-err"></div>
     <button class="btn-p" onclick="saveEditStu()">Opslaan</button>
     <button class="btn-g" onclick="closeEditStu()">Annuleren</button>
@@ -1265,9 +1557,7 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
         <div id="toets-results" class="toets-results" style="display:none;"></div>
       </div>
       <div id="toets-selected" class="toets-selected"></div>
-      <div id="toets-no-m365" class="toets-no-m365" style="display:none;">
-        ℹ️ Koppel de app aan Microsoft 365 (Admin → ☁️ Microsoft 365) om mails te sturen.
-      </div>
+
     </div>
 
     <!-- Bericht -->
@@ -1332,13 +1622,13 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
 
 <!-- ══ LOGOUT CONFIRM MODAL ══════════════════════════ -->
 <div class="overlay" id="modal-logout-confirm">
-  <div class="modal-card logout-modal">
-    <h2 style="font-size:1.05rem;margin-bottom:.6rem;">💾 Uitloggen</h2>
-    <p style="font-size:.88rem;color:var(--tx2);margin:0 0 .4rem;">Wil je de laatste data synchroniseren met de server voordat je uitlogt?</p>
+  <div class="modal-card logout-modal" style="position:relative;">
+    <h2 style="font-size:1.05rem;margin-bottom:.5rem;">💾 Uitloggen</h2>
+    <p style="font-size:.88rem;color:var(--tx2);margin:0 0 .5rem;">Synchroniseer de laatste data met de server voordat je uitlogt.</p>
     <p id="logout-sync-status" style="font-size:.8rem;color:var(--tx3);min-height:1.2rem;"></p>
-    <div class="logout-modal-btns">
-      <button class="btn-ghost" onclick="doLogout()">Uitloggen zonder sync</button>
-      <button class="btn-primary" id="btn-logout-sync" onclick="syncThenLogout()">☁️ Sync &amp; uitloggen</button>
+    <button class="btn-primary" id="btn-logout-sync" onclick="syncThenLogout()" style="width:100%;padding:.85rem;font-size:1.05rem;margin-bottom:.4rem;">☁️ Sync &amp; uitloggen</button>
+    <div style="display:flex;justify-content:flex-end;margin-top:.2rem;">
+      <button class="btn-ghost" onclick="doLogout()" style="font-size:.75rem;padding:.22rem .65rem;opacity:.65;">Uitloggen zonder sync</button>
     </div>
   </div>
 </div>
@@ -1380,6 +1670,7 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
 <!-- Print output (hidden, shown only via @media print) -->
 <div id="gesprek-print-area"></div>
 <div id="verg-print-area"></div>
+<div id="sched-print-area"></div>
 
 <!-- ══ VERGADERING 2.0 SCREEN ══════════════════════════ -->
 <div id="screen-verg">
@@ -1406,6 +1697,7 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
     <div style="flex:1;">
       <span class="cij-hdr-title">📊 Cijfers</span>
     </div>
+    <span id="cij-sync-chip" style="display:none;font-size:.8rem;background:rgba(255,255,255,.2);border-radius:6px;padding:.2rem .6rem;color:#fff;"></span>
   </div>
   <div class="cij-body">
     <button class="cij-add-btn" onclick="openCijferModal()">＋ Nieuw cijfer invoeren</button>
@@ -1481,8 +1773,9 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
     <button class="adm-tab" onclick="switchAdmTab(1)">🔑 Rollen</button>
     <button class="adm-tab" onclick="switchAdmTab(2)">🗓️ Vakanties</button>
     <button class="adm-tab" onclick="switchAdmTab(3)">👥 Leerlingen</button>
-    <button class="adm-tab" onclick="switchAdmTab(4)">☁️ Microsoft 365</button>
+    <button class="adm-tab" onclick="switchAdmTab(4)">☁️ Supabase</button>
     <button class="adm-tab" onclick="switchAdmTab(5)">📋 Aanwezigheid</button>
+    <button class="adm-tab" onclick="switchAdmTab(6)">🔐 Superadmin</button>
   </div>
 
   <div class="adm-body">
@@ -1572,7 +1865,7 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
           <div id="period-exam-list"></div>
         </div>
         <div class="sp-section" style="margin-bottom:.2rem;">
-          <div class="sp-section-lbl">Voorexamenleerlingen (M3, H4, V4, V5)</div>
+          <div class="sp-section-lbl">Voorexamenleerlingen (H2, H3, M3, V2, V3, H4, V4, V5)</div>
           <div id="period-preexam-list"></div>
         </div>
         <div style="display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-top:.75rem;">
@@ -1678,7 +1971,11 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
             <div class="fw" style="margin-bottom:0">
               <label class="flabel">Klas</label>
               <select class="field-inp" id="stu-class-inp" onchange="onClassChange()" style="margin-bottom:0">
+                <option value="H2">H2</option>
+                <option value="H3">H3</option>
                 <option value="M3">M3</option>
+                <option value="V2">V2</option>
+                <option value="V3">V3</option>
                 <option value="M4">M4</option>
                 <option value="H4">H4</option>
                 <option value="H5">H5</option>
@@ -1719,7 +2016,7 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
       </div>
     </div>
 
-    <!-- Tabblad 6: Microsoft 365 koppeling -->
+    <!-- Tabblad 6: Supabase koppeling -->
     <div class="adm-panel">
       <div class="adm-card">
         <h3>☁️ Supabase — Gedeelde opslag</h3>
@@ -1760,10 +2057,71 @@ body.dark .student-bar{background:#3D1C00;border-bottom-color:#5A2800;}
       </div>
     </div>
 
+    <!-- Tabblad 7: Superadmin -->
+    <div class="adm-panel">
+      <div class="adm-card">
+        <h3>🔐 Superadmin — Toegang tot Admin</h3>
+        <p class="card-note" style="margin-bottom:1rem;">
+          Alleen de e-mailadressen in deze lijst zien de <strong>⚙️ Admin</strong>-knop na het inloggen met Microsoft 365.
+          Is de lijst leeg, dan kunnen <em>alle</em> coaches en coördinatoren bij Admin (zoals voorheen).
+        </p>
+        <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.75rem;">
+          <input class="field-inp" type="email" id="sadm-email-inp" placeholder="naam@school.nl" style="margin:0;flex:1;"
+            onkeydown="if(event.key==='Enter')addSuperadmin()">
+          <button class="btn-save-sm" onclick="addSuperadmin()">+ Toevoegen</button>
+        </div>
+        <div class="ok-msg" id="sadm-ok" style="display:none;margin-bottom:.5rem;">✓ Opgeslagen</div>
+        <div class="err-msg" id="sadm-err" style="display:none;margin-bottom:.5rem;"></div>
+        <div id="sadm-list" style="display:flex;flex-direction:column;gap:.4rem;"></div>
+      </div>
+
+      <!-- Display wachtwoord -->
+      <div class="adm-card" style="margin-top:1rem;">
+        <h3>🖥️ Display — Klasscherm</h3>
+        <p class="card-note" style="margin-bottom:1rem;">
+          Het Display-scherm toont alle leerlingen als tegels op een touchscreen. Klik op een tegel om de weekplanning te openen.
+          Stel hier een wachtwoord in. Op het inlogscherm verschijnt dan een <strong>🖥️ Display</strong>-knop.
+          Laat het weld leeg om de Display-knop te verbergen.
+        </p>
+        <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.5rem;">
+          <input class="field-inp" type="password" id="display-pw-inp" placeholder="Display wachtwoord" style="margin:0;flex:1;"
+            onkeydown="if(event.key==='Enter')saveDisplayPw()">
+          <button class="btn-save-sm" onclick="saveDisplayPw()">Opslaan</button>
+        </div>
+        <div class="ok-msg" id="display-pw-ok" style="display:none;margin-bottom:.3rem;">✓ Opgeslagen</div>
+        <div id="display-pw-status" style="font-size:.8rem;color:var(--tx3);"></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ DISPLAY SCREEN ══════════════════════════════ -->
+<div id="screen-display">
+  <div class="display-hdr">
+    <div class="display-hdr-title" id="display-hdr-title">Weekplanning</div>
+    <button class="display-logout-btn" onclick="displayLogout()">Uitloggen</button>
+  </div>
+  <div style="flex:1;padding:1.2rem 1rem;overflow-y:auto;">
+    <div id="display-tiles-ct" class="display-tiles"></div>
+  </div>
+</div>
+
+<!-- Display login modal -->
+<div class="overlay" id="modal-display-login">
+  <div class="modal-card">
+    <h2>🖥️ Display</h2>
+    <p class="modal-sub">Voer het Display-wachtwoord in om het klasscherm te openen.</p>
+    <input type="password" class="field-inp" id="display-login-pw" placeholder="Wachtwoord"
+      onkeydown="if(event.key==='Enter')doDisplayLogin()">
+    <div class="err-msg" id="display-login-err">Onjuist wachtwoord — probeer opnieuw.</div>
+    <button class="btn-p" onclick="doDisplayLogin()">Openen →</button>
+    <button class="btn-g" onclick="closeDisplayLogin()">Annuleren</button>
   </div>
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
 <script>
 /* ══ CONSTANTS ══════════════════════════════════════ */
 const SCHOOL = [
@@ -1813,12 +2171,12 @@ const WE_NAMES   = ['Zaterdag','Zondag'];
 const MONTHS     = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
 const MONTHS_FULL= ['Januari','Februari','Maart','April','Mei','Juni','Juli','Augustus','September','Oktober','November','December'];
 const COLORS     = [null,'green','red','rose','blue','purple','yellow','orange'];
-const COLOR_LBL  = {green:'Aanwezig',red:'Training',rose:'Overig',blue:'Rust',purple:'Wedstrijd',yellow:'Toets',orange:'Toernooi'};
+const COLOR_LBL  = {green:'A',red:'Tr',rose:'O',blue:'R',purple:'W',yellow:'Toets',orange:'Toe'};
 const STD_LBL    = {null:'—',green:'Aanwezig',red:'Training',rose:'Overig',blue:'Rust',purple:'Wedstrijd',yellow:'Toets',orange:'Toernooi'};
 const ROLE_NAME  = {coordinator:'Coördinator',coach:'Coach',leerling:'Leerling',ouder:'Ouder',docent:'Docent',admin:'Admin'};
 const NEEDS_YEAR      = ['M4','H5','V6'];
 const EXAM_CLASSES    = ['M4','H5','V6'];
-const PREEXAM_CLASSES = ['M3','H4','V4','V5'];
+const PREEXAM_CLASSES = ['H2','H3','M3','V2','V3','H4','V4','V5'];
 const EXAM_PERIODS    = [
   {id:'E1',label:'Periode 1'},
   {id:'E2',label:'Periode 2'},
@@ -1831,7 +2189,7 @@ const PREEXAM_PERIODS = [
 ];
 const PW_DEFAULT      = 'AdminAdmin';
 const SUBJECTS   = ['NE','EN','DU','FA','EC','BEC','BI','NA','SK','GS','AK','WiA','WiB'];
-const BESCH_KLASSEN = ['M3','M4','H4','H5','V4','V5','V6'];
+const BESCH_KLASSEN = ['H2','H3','M3','V2','V3','M4','H4','H5','V4','V5','V6'];
 function beschValLabel(val){
   if(!val || val==='afwezig') return '—';
   if(val==='lokaal107') return 'Lokaal 107'; // backward compat
@@ -1849,7 +2207,7 @@ function beschValLabel(val){
 const S = {
   role:null, pendingRole:null,
   wy:null, showExtra:false, showWeekend:false, editMode:false,
-  viewMode:'week',       // 'week' | 'month'
+  viewMode:'week',       // 'week' | 'month' | '4wk'
   currentMonth:null,     // {year, month}
   // Settings
   schoolName:'Parmant Joris',
@@ -1862,6 +2220,7 @@ const S = {
   studentData:{},        // {studentId:{std:{},ovr:{}}}
   tmpStd:{},
   tmpStdTimes:{},        // {di:{slotId:'HH:MM'}, ...} — aankomsttijd per cel (tijdelijk tijdens edit)
+  tmpStdVak:{},          // {di:{slotId:'vakNaam'}, ...} — vak per groene cel (tijdelijk tijdens edit)
   teacherPasswords:{},   // {NE:'pw', EN:'pw', ...}
   docentVak:null,
   studentPasswords:{},   // {studentId:'pw'}
@@ -1876,6 +2235,9 @@ const S = {
   aanw:{},               // {weekKey:{di:{stuId:{status:'ok'|'nok'|'mod',note:''}}}} — aanwezigheidsregistratie
   vergaderingen:[],      // [{id,date,week,year,aanwezigheid,puntenVorige,leerlingen,anderezaken,vakdocenten,ontwikkeling}]
   cijfers:[],            // [{id,ts,docentVak,studentId,studentName,vak,cijfer,onderwerp,pta,weging}]
+  huiswerk:[],           // [{id,studentId,week,les,opmerking,weekKey,di,slotId,ts}] — weekKey/di/slotId null = ongeplaatst
+  superadmins:[],        // [email, ...] — wie de Admin-knop ziet; leeg = alle coaches/coordinatoren (backward compat)
+  displayPassword:'',    // wachtwoord voor Display-rol (leeg = knop verborgen)
   schoolLogo:'',         // base64 data URL van het schoollogo
   schoolPeriods:{        // datums per periode
     exam:   {E1:{from:'',to:''},E2:{from:'',to:''},E3:{from:'',to:''}},
@@ -1974,12 +2336,12 @@ function removeSchoolLogo(){
   applySchoolLogo();
 }
 
-/* ══ MICROSOFT 365 / GRAPH API ══════════════════════ */
 /* ══ SUPABASE CONFIG ══════════════════════════════ */
 const SUPABASE_URL = 'https://qcvmzxfyliqaafnrqtgh.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_ds-szq5Z7774ck71Dnh4lQ_37Tw4IrE';
 
 // Supabase client initialiseren (via CDN script geladen)
+if(!window.supabase){ document.body.innerHTML='<div style="padding:2rem;font-family:sans-serif;color:red;">Fout: bibliotheek niet geladen. Herlaad de pagina.</div>'; throw new Error('Supabase niet geladen'); }
 const _sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 let _sbUser = null;
 let _currentSchoolId = null;   // UUID van de actief geselecteerde school
@@ -1989,7 +2351,8 @@ const SP_KEYS = [
   'wp_schoolName','wp_schoolLogo','wp_year','wp_yearFrom','wp_yearTo',
   'wp_specDays','wp_students','wp_curStu','wp_stuData',
   'wp_teacherPw','wp_stuPw','wp_besch','wp_periods','wp_roleMap','wp_adminPw',
-  'wp_aanw'
+  'wp_aanw','wp_verg','wp_cijfers','wp_huiswerk','wp_superadmins','wp_displayPw',
+  'wp_changeLog','wp_coachLastSeen'
 ];
 
 /* ── DATA SYNC (vervangt SharePoint Graph API) ──── */
@@ -2000,7 +2363,7 @@ async function spLoad(){
   const { data, error } = await _sb.from('planning_data')
     .select('key,value')
     .eq('school_id', _currentSchoolId);
-  if(error){ setSyncChip('err','✕ Laadprobleem'); return {ok:false, error:error.message}; }
+  if(error){ setSyncChip('err','✕ Laadprobleem'); console.error('spLoad fout:', error.message, error.status); return {ok:false, error:error.message}; }
   if(!data || data.length === 0){ setSyncChip('idle','☁️ Sync'); return {ok:true}; }
   for(const row of data){ localStorage.setItem(row.key, row.value); }
   setSyncChip('ok','✓ Geladen');
@@ -2053,10 +2416,15 @@ function setSyncChip(state, text){
 }
 
 async function loginWithGoogle(){
-  await _sb.auth.signInWithOAuth({
+  const errDiv = document.getElementById('ms-login-err');
+  if(errDiv) errDiv.style.display = 'none';
+  const { error } = await _sb.auth.signInWithOAuth({
     provider:'google',
-    options:{ redirectTo: window.location.href.split('?')[0] }
+    options:{ redirectTo: window.location.origin + window.location.pathname }
   });
+  if(error){
+    if(errDiv){ errDiv.textContent = 'Google login fout: ' + error.message; errDiv.style.display = 'block'; }
+  }
 }
 
 async function loginWithMicrosoft(){
@@ -2099,42 +2467,86 @@ async function _sbLoginWithUser(user){
   _sbUser = user;
   const email = user.email || '';
 
+  // Profiel opnieuw ophalen als het nog niet geladen is
+  if(!_userProfile && user.id){
+    _userProfile = await _fetchProfile(user.id);
+  }
+
   // Superadmin: ga direct naar coordinator view + toon wissel-knop
   if(_userProfile?.role === 'superadmin'){
     _showSuperadminBar();
-    if(typeof enterCoordinator === 'function'){ enterCoordinator(); }
+    S.role = 'coordinator';
+    closeLogin();
+    showMain();
     return;
   }
 
-  // Controleer of email in roleMap staat
+  // Gebruik Supabase profiel-rol direct
+  if(_userProfile?.role){
+    const role = _userProfile.role;
+    if(role === 'coordinator' || role === 'coördinator'){
+      S.role = 'coordinator'; closeLogin(); showMain(); return;
+    }
+    if(role === 'docent'){
+      const vak = (S.roleMap && S.roleMap[email.toLowerCase()]?.vak) || '';
+      S.role = 'docent'; S.docentVak = vak; closeLogin(); showMain(); return;
+    }
+    if(role === 'coach'){
+      S.role = 'coach'; closeLogin(); showMain(); return;
+    }
+    if(role === 'admin'){
+      S.role = 'admin'; closeLogin(); showAdmin(); return;
+    }
+  }
+
+  // Fallback: controleer legacy roleMap
   const mapping = S.roleMap && S.roleMap[email.toLowerCase()];
   if(mapping){
     const roleName = mapping.role || mapping;
     const studentId = mapping.studentId || null;
-    if(typeof enterCoordinator === 'function' && (roleName === 'coordinator' || roleName === 'coördinator')){ enterCoordinator(); return; }
-    if(typeof enterDocent === 'function' && roleName === 'docent'){ enterDocent(email, mapping.vak||''); return; }
-    if(typeof enterLeerling === 'function' && roleName === 'leerling' && studentId){ enterLeerling(studentId); return; }
-    if(typeof enterCoach === 'function' && roleName === 'coach'){ enterCoach(); return; }
+    if(roleName === 'coordinator' || roleName === 'coördinator'){
+      S.role = 'coordinator'; closeLogin(); showMain(); return;
+    }
+    if(roleName === 'docent'){
+      S.role = 'docent'; S.docentVak = mapping.vak||''; closeLogin(); showMain(); return;
+    }
+    if(roleName === 'leerling' && studentId){
+      S.role = 'leerling'; S.leerlingStudentId = studentId; S.currentStudentId = studentId; closeLogin(); showMain(); return;
+    }
+    if(roleName === 'coach'){
+      S.role = 'coach'; closeLogin(); showMain(); return;
+    }
   }
-  // Admin check (admin heeft eigen wachtwoord — toon admin login modal)
+
+  // Ingelogd via Supabase maar geen rol → standaard coordinator
+  if(_userProfile){
+    S.role = 'coordinator'; closeLogin(); showMain(); return;
+  }
+
+  // Geen Supabase profiel → admin wachtwoord modal
   openLogin('admin');
 }
 
 function _showSuperadminBar(){
   let bar = document.getElementById('superadmin-bar');
-  if(bar) return;
-  bar = document.createElement('div');
-  bar.id = 'superadmin-bar';
-  bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:8888;background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;font-size:.78rem;font-weight:600;padding:.35rem 1rem;display:flex;align-items:center;gap:1rem;letter-spacing:.03em;';
-  bar.innerHTML = \`<span>🔑 SUPERADMIN</span><span id="sa-school-label" style="opacity:.8;font-weight:400;flex:1;"></span>
-    <button onclick="switchSchool()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:.2rem .7rem;cursor:pointer;font-size:.75rem;">Wissel school</button>
-    <button onclick="sbSignOut()" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:6px;padding:.2rem .7rem;cursor:pointer;font-size:.75rem;">Uitloggen</button>\`;
-  document.body.insertBefore(bar, document.body.firstChild);
-  // School naam tonen
-  _sb.from('schools').select('name').eq('id', _currentSchoolId).maybeSingle().then(({data})=>{
-    const lbl = document.getElementById('sa-school-label');
-    if(lbl && data) lbl.textContent = data.name;
-  });
+  if(!bar){
+    bar = document.createElement('div');
+    bar.id = 'superadmin-bar';
+    bar.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:8888;background:linear-gradient(90deg,#4f46e5,#7c3aed);color:#fff;font-size:.78rem;font-weight:600;padding:.35rem 1rem;display:flex;align-items:center;gap:1rem;letter-spacing:.03em;';
+    bar.innerHTML = '<span>🔑 SUPERADMIN</span><span id="sa-school-label" style="opacity:.8;font-weight:400;flex:1;"></span>'
+      + '<button onclick="switchSchool()" style="background:rgba(255,255,255,.2);border:none;color:#fff;border-radius:6px;padding:.2rem .7rem;cursor:pointer;font-size:.75rem;">Wissel school</button>'
+      + '<button onclick="sbSignOut()" style="background:rgba(255,255,255,.15);border:none;color:#fff;border-radius:6px;padding:.2rem .7rem;cursor:pointer;font-size:.75rem;">Uitloggen</button>';
+    document.body.insertBefore(bar, document.body.firstChild);
+    // Voeg padding toe zodat de bar niet over content valt
+    setTimeout(() => { document.body.style.paddingTop = bar.offsetHeight + 'px'; }, 0);
+  }
+  // School naam altijd updaten (ook bij schoolwissel)
+  if(_currentSchoolId){
+    _sb.from('schools').select('name').eq('id', _currentSchoolId).maybeSingle().then(({data})=>{
+      const lbl = document.getElementById('sa-school-label');
+      if(lbl && data) lbl.textContent = '— ' + data.name;
+    });
+  }
 }
 
 async function switchSchool(){
@@ -2180,18 +2592,18 @@ async function showSchoolPicker(schools){
   const overlay = document.createElement('div');
   overlay.id = 'school-picker-overlay';
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;';
-  
+
   const box = document.createElement('div');
   box.style.cssText = 'background:#fff;border-radius:16px;padding:2rem;max-width:440px;width:92%;max-height:80vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.25);';
-  
+
   const title = document.createElement('h2');
   title.textContent = '🏫 Selecteer school';
   title.style.cssText = 'margin:0 0 .5rem;font-size:1.2rem;color:#1a1a2e;';
-  
+
   const sub = document.createElement('p');
   sub.textContent = 'Je bent superadmin. Kies de school om mee te werken.';
   sub.style.cssText = 'margin:0 0 1.5rem;font-size:.85rem;color:#666;';
-  
+
   box.appendChild(title);
   box.appendChild(sub);
 
@@ -2226,10 +2638,10 @@ async function addSchoolPrompt(overlay, existingSchools){
   const name = prompt('Naam van de nieuwe school:');
   if(!name || !name.trim()) return;
   const slug = name.trim().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  
+
   const { data, error } = await _sb.from('schools').insert({name:name.trim(), slug}).select().maybeSingle();
   if(error){ alert('Fout bij aanmaken: ' + error.message); return; }
-  
+
   overlay.remove();
   await _setSchool(data.id);
   const loaded = await spLoad();
@@ -2237,20 +2649,28 @@ async function addSchoolPrompt(overlay, existingSchools){
   await _sbLoginWithUser(_sbUser);
 }
 
-/* ── INIT (vervangt m365Init) ──────────────────── */
+/* ── INIT ──────────────────────────────────────── */
 
+let _sbInitBusy = false;
 async function sbInit(){
   // Luister naar auth-wijzigingen (ook na OAuth redirect)
   _sb.auth.onAuthStateChange(async (event, session) => {
+    // Voorkom dubbele verwerking bij snel opeenvolgende events
+    if(_sbInitBusy) return;
+    if(event !== 'SIGNED_IN' && event !== 'INITIAL_SESSION' && event !== 'TOKEN_REFRESHED') return;
+    _sbInitBusy = true;
+    try {
     const userEl = document.getElementById('btn-sb-user');
     if(session?.user){
       _sbUser = session.user;
       const email = session.user.email || '';
       if(userEl){ userEl.textContent = email.split('@')[0]; userEl.style.display = ''; }
-      
-      // Profiel ophalen
-      _userProfile = await _fetchProfile(session.user.id);
-      
+
+      // Profiel ophalen (alleen als nog niet geladen)
+      if(!_userProfile){
+        _userProfile = await _fetchProfile(session.user.id);
+      }
+
       if(_userProfile?.role === 'superadmin'){
         // Superadmin: laad school uit vorige sessie of toon picker
         const lastSchool = localStorage.getItem('_last_school_id');
@@ -2259,7 +2679,7 @@ async function sbInit(){
         } else {
           const schools = await _fetchSchools();
           await showSchoolPicker(schools);
-          return; // picker handelt rest af
+          _sbInitBusy = false; return; // picker handelt rest af
         }
       } else if(_userProfile?.school_id){
         await _setSchool(_userProfile.school_id);
@@ -2268,8 +2688,8 @@ async function sbInit(){
       setSyncChip('syncing','⟳ Laden…');
       const loaded = await spLoad();
       if(loaded?.ok){ hydrate(); applySchoolName(); applySchoolLogo(); }
-      
-      if(event === 'SIGNED_IN'){
+
+      if(event === 'SIGNED_IN' || event === 'INITIAL_SESSION'){
         await _sbLoginWithUser(session.user);
       }
       const el = document.getElementById('sb-admin-status');
@@ -2281,6 +2701,11 @@ async function sbInit(){
       if(userEl) userEl.style.display = 'none';
       setSyncChip('','');
     }
+    } catch(e){
+      console.error('Auth fout:', e);
+      const errDiv = document.getElementById('ms-login-err');
+      if(errDiv){ errDiv.textContent = 'Auth fout: ' + (e && e.message ? e.message : String(e)); errDiv.style.display='block'; }
+    } finally { _sbInitBusy = false; }
   });
 
   // Controleer huidige sessie bij opstarten
@@ -2290,18 +2715,6 @@ async function sbInit(){
   }
 }
 
-
-
-function _applyRoleMapping(mapping, email){
-  S.role = mapping.role;
-  S.loggedInEmail = email || null;
-  S.docentVak = mapping.vak || null;
-  if(mapping.studentId){ S.leerlingStudentId=mapping.studentId; S.currentStudentId=mapping.studentId; }
-  if(mapping.role==='admin') showAdmin();
-  else showMain();
-}
-
-// loginWithMicrosoft: zie Supabase Auth sectie hierboven
 
 /* ══ PERSIST / HYDRATE ══════════════════════════════ */
 function persist(){
@@ -2326,16 +2739,12 @@ function persist(){
     localStorage.setItem('wp_aanw', JSON.stringify(S.aanw));
     localStorage.setItem('wp_verg', JSON.stringify(S.vergaderingen));
     localStorage.setItem('wp_cijfers', JSON.stringify(S.cijfers));
+    localStorage.setItem('wp_huiswerk', JSON.stringify(S.huiswerk));
+    localStorage.setItem('wp_superadmins', JSON.stringify(S.superadmins));
+    localStorage.setItem('wp_displayPw', S.displayPassword||'');
   }catch(e){}
-  // Debounced auto-sync naar SharePoint (wacht 3 seconden na laatste wijziging)
-  if(false){ // M365 niet beschikbaar:
-    clearTimeout(window._spSyncTimer);
-    setSyncChip('idle','☁️ Opslaan…');
-    window._spSyncTimer = setTimeout(()=>{
-      setSyncChip('syncing','⟳ Opslaan…');
-      spSyncAll().catch(()=>{});
-    }, 3000);
-  }
+  // Debounced auto-sync naar Supabase (wacht 3 seconden na laatste wijziging)
+  if(_currentSchoolId){ scheduleSbSync(); }
 }
 function hydrate(){
   try{
@@ -2359,6 +2768,9 @@ function hydrate(){
     const aan=localStorage.getItem('wp_aanw'); if(aan) S.aanw=JSON.parse(aan);
     const vrg=localStorage.getItem('wp_verg'); if(vrg) S.vergaderingen=JSON.parse(vrg);
     const cij=localStorage.getItem('wp_cijfers'); if(cij) S.cijfers=JSON.parse(cij);
+    const hwk=localStorage.getItem('wp_huiswerk'); if(hwk) S.huiswerk=JSON.parse(hwk);
+    const sadm=localStorage.getItem('wp_superadmins'); if(sadm) S.superadmins=JSON.parse(sadm);
+    const dpw=localStorage.getItem('wp_displayPw'); if(dpw!==null) S.displayPassword=dpw;
     const prd=localStorage.getItem('wp_periods');
     if(prd){ const p=JSON.parse(prd);
       if(p.exam) S.schoolPeriods.exam=Object.assign(S.schoolPeriods.exam,p.exam);
@@ -2370,6 +2782,9 @@ function hydrate(){
     }
     if(!S.currentStudentId && S.students.length) S.currentStudentId=S.students[0].id;
   }catch(e){}
+  // Zorg dat de Display-knop altijd klopt na elke hydrate (ook na spLoad)
+  const _dw=document.getElementById('btn-display-login-wrap');
+  if(_dw) _dw.style.display=S.displayPassword?'':'none';
 }
 
 /* ══ DARK THEME ═════════════════════════════════════ */
@@ -2535,7 +2950,7 @@ function switchAdmTab(idx){
   document.querySelectorAll('.adm-tab').forEach((t,i)=>t.classList.toggle('active',i===idx));
   document.querySelectorAll('.adm-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
   if(idx===2) renderRollenList();
-  // if(idx===4) loadM365Cfg(); // M365 niet meer gebruikt
+  if(idx===6){ renderSuperadminList(); renderDisplayPwStatus(); }
 }
 
 function showAdmin(){
@@ -2548,9 +2963,6 @@ function showAdmin(){
   const backBtn=document.getElementById('btn-admin-back');
   if(backBtn) backBtn.style.display=(S.role==='coach'||S.role==='coordinator')?'':'none';
   switchAdmTab(0);
-  // Automatisch M365 verbinden als er een geldig token is + item-IDs ophalen voor betrouwbare sync
-  if(false && !_graphToken){ // M365 check overgeslagen: acquireToken(false).then(async t=>{ if(t){ _graphToken=t; setSyncChip('idle','☁️ Sync'); await spFetchItemIds(); } }); }
-  else if(!Object.keys(_spItemIds).length){ spFetchItemIds(); }
   // Set school name + year
   document.getElementById('a-schoolname').value=S.schoolName;
   document.getElementById('sn-ok').style.display='none';
@@ -2563,6 +2975,8 @@ function showAdmin(){
   renderStudentsList();
   renderStudentPasswordList();
   applySchoolLogo();
+  renderSuperadminList();
+  renderDisplayPwStatus();
 }
 
 function changeAdminPassword(){
@@ -2590,6 +3004,162 @@ function changeAdminPassword(){
   document.getElementById('adm-pw-confirm').value='';
   okEl.style.display='block';
   setTimeout(()=>okEl.style.display='none', 2500);
+}
+
+/* ── Superadmin beheer ── */
+function renderSuperadminList(){
+  const ct=document.getElementById('sadm-list');
+  if(!ct) return;
+  if(!S.superadmins.length){
+    ct.innerHTML='<span style="color:var(--tx3);font-size:.83rem;">Geen superadmins ingesteld — alle coaches en coördinatoren hebben toegang tot Admin.</span>';
+    return;
+  }
+  ct.innerHTML='';
+  S.superadmins.forEach(email=>{
+    const row=document.createElement('div');
+    row.style.cssText='display:flex;align-items:center;justify-content:space-between;background:var(--surf-2);border:1px solid var(--border);border-radius:8px;padding:.45rem .8rem;gap:.5rem;';
+    const lbl=document.createElement('span');
+    lbl.style.cssText='font-size:.84rem;color:var(--tx);font-weight:500;word-break:break-all;';
+    lbl.textContent=email;
+    const btn=document.createElement('button');
+    btn.className='btn-danger';
+    btn.style.cssText='font-size:.75rem;padding:.2rem .6rem;white-space:nowrap;';
+    btn.textContent='✕ Verwijderen';
+    btn.onclick=()=>removeSuperadmin(email);
+    row.appendChild(lbl); row.appendChild(btn);
+    ct.appendChild(row);
+  });
+}
+function addSuperadmin(){
+  const inp=document.getElementById('sadm-email-inp');
+  const errEl=document.getElementById('sadm-err');
+  const okEl=document.getElementById('sadm-ok');
+  errEl.style.display='none'; okEl.style.display='none';
+  const email=(inp.value||'').trim().toLowerCase();
+  if(!email||!email.includes('@')){ errEl.textContent='Voer een geldig e-mailadres in.'; errEl.style.display='block'; return; }
+  if(S.superadmins.includes(email)){ errEl.textContent='Dit adres staat al in de lijst.'; errEl.style.display='block'; return; }
+  S.superadmins.push(email);
+  persist();
+  inp.value='';
+  renderSuperadminList();
+  // herbereken zichtbaarheid admin-knop
+  const canAdmin = !S.superadmins.length || S.superadmins.includes(S.loggedInEmail||'');
+  const btnAdm=document.getElementById('btn-admin-header');
+  if(btnAdm && (S.role==='coach'||S.role==='coordinator')) btnAdm.style.display=canAdmin?'':'none';
+  okEl.style.display='block'; setTimeout(()=>okEl.style.display='none',2000);
+}
+function removeSuperadmin(email){
+  S.superadmins=S.superadmins.filter(e=>e!==email);
+  persist();
+  renderSuperadminList();
+  // herbereken zichtbaarheid admin-knop
+  const canAdmin = !S.superadmins.length || S.superadmins.includes(S.loggedInEmail||'');
+  const btnAdm=document.getElementById('btn-admin-header');
+  if(btnAdm && (S.role==='coach'||S.role==='coordinator')) btnAdm.style.display=canAdmin?'':'none';
+}
+
+/* ── Display wachtwoord beheer ── */
+function renderDisplayPwStatus(){
+  const st=document.getElementById('display-pw-status');
+  if(!st) return;
+  st.textContent = S.displayPassword
+    ? '✓ Display-knop actief (wachtwoord ingesteld)'
+    : 'Geen wachtwoord — Display-knop verborgen op inlogscherm';
+  const inp=document.getElementById('display-pw-inp');
+  if(inp) inp.value='';
+}
+function saveDisplayPw(){
+  const inp=document.getElementById('display-pw-inp');
+  const okEl=document.getElementById('display-pw-ok');
+  const val=(inp.value||'').trim();
+  S.displayPassword=val;
+  persist();
+  renderDisplayPwStatus();
+  // Toon/verberg de Display-knop op het inlogscherm
+  const wrap=document.getElementById('btn-display-login-wrap');
+  if(wrap) wrap.style.display=S.displayPassword?'':'none';
+  okEl.style.display='block';
+  setTimeout(()=>okEl.style.display='none',2000);
+}
+
+/* ── Display inloggen ── */
+function openDisplayLogin(){
+  document.getElementById('display-login-pw').value='';
+  document.getElementById('display-login-err').style.display='none';
+  document.getElementById('modal-display-login').classList.add('show');
+  setTimeout(()=>document.getElementById('display-login-pw').focus(),80);
+}
+function closeDisplayLogin(){
+  document.getElementById('modal-display-login').classList.remove('show');
+}
+function doDisplayLogin(){
+  const pw=document.getElementById('display-login-pw').value;
+  if(!S.displayPassword || pw!==S.displayPassword){
+    document.getElementById('display-login-err').style.display='block';
+    document.getElementById('display-login-pw').value='';
+    document.getElementById('display-login-pw').focus();
+    return;
+  }
+  closeDisplayLogin();
+  S.role='display';
+  showDisplay();
+}
+
+/* ── Display scherm ── */
+function showDisplay(){
+  document.getElementById('screen-roles').style.display='none';
+  document.getElementById('screen-main').classList.remove('show');
+  document.getElementById('screen-admin').classList.remove('show');
+  document.getElementById('screen-verg').classList.remove('show');
+  document.getElementById('screen-cijfers').classList.remove('show');
+  const ds=document.getElementById('screen-display');
+  ds.classList.add('show');
+  // set header school name
+  const hdrTitle=document.getElementById('display-hdr-title');
+  if(hdrTitle) hdrTitle.textContent=S.schoolName||'Weekplanning';
+  renderDisplayTiles();
+}
+
+function renderDisplayTiles(){
+  const ct=document.getElementById('display-tiles-ct');
+  if(!ct) return;
+  const stus=[...S.students].sort((a,b)=>a.name.localeCompare(b.name,'nl'));
+  if(!stus.length){
+    ct.innerHTML='<div style="color:var(--tx3);text-align:center;padding:3rem;grid-column:1/-1;">Geen leerlingen gevonden.</div>';
+    return;
+  }
+  ct.innerHTML='';
+  stus.forEach(stu=>{
+    const firstName=stu.name.trim().split(/\s+/)[0];
+    const initial=firstName[0]||'?';
+    const tile=document.createElement('div');
+    tile.className='display-tile';
+    tile.innerHTML=`
+      <div class="display-tile-initial">${initial}</div>
+      <div class="display-tile-name">${firstName}</div>
+      <div class="display-tile-klass">${stu.klass||''}</div>`;
+    tile.onclick=()=>openDisplayStu(stu.id);
+    ct.appendChild(tile);
+  });
+}
+
+function openDisplayStu(stuId){
+  S.currentStudentId=stuId;
+  // Switch to main screen in display mode (read-only)
+  showMain(); // showMain already hides screen-display via classList.remove
+}
+
+function displayBack(){
+  // Return from main screen back to display tiles
+  document.getElementById('screen-main').classList.remove('show');
+  showDisplay();
+}
+
+function displayLogout(){
+  S.role=null; S.editMode=false;
+  document.getElementById('screen-display').classList.remove('show');
+  document.getElementById('screen-main').classList.remove('show');
+  document.getElementById('screen-roles').style.display='';
 }
 
 function saveSchoolName(){
@@ -2837,7 +3407,7 @@ function onClassChange(){
 }
 
 function addStudent(){
-  if(S.students.length>=20){alert('Maximum van 20 leerlingen bereikt.');return;}
+  if(S.students.length>=25){alert('Maximum van 25 leerlingen bereikt.');return;}
   const name=document.getElementById('stu-name-inp').value.trim();
   const klass=document.getElementById('stu-class-inp').value;
   if(!name){alert('Voer een naam in.');return;}
@@ -2849,7 +3419,7 @@ function addStudent(){
   if(!S.currentStudentId) S.currentStudentId=id;
   persist();
   document.getElementById('stu-name-inp').value='';
-  document.getElementById('stu-class-inp').value='M3';
+  document.getElementById('stu-class-inp').value='H2';
   document.getElementById('stu-year-wrap').style.display='none';
   hideForm('stu-form','btn-add-stu');
   renderStudentsList();
@@ -2859,9 +3429,9 @@ function addStudent(){
 function renderStudentsList(){
   const list=document.getElementById('students-list');
   list.innerHTML='';
-  document.getElementById('stu-cnt').textContent='('+S.students.length+'/20)';
+  document.getElementById('stu-cnt').textContent='('+S.students.length+'/25)';
   const btn=document.getElementById('btn-add-stu');
-  btn.disabled=S.students.length>=20;
+  btn.disabled=S.students.length>=25;
   if(!S.students.length){
     list.innerHTML='<p class="empty-note">Nog geen leerlingen toegevoegd.</p>';
     return;
@@ -3139,6 +3709,8 @@ function openEditStu(id){
   lbl.textContent='Gevolgde vakken per periode';
   ct.appendChild(lbl);
   ct.appendChild(buildPeriodVakGrid(stu.klass, stu.vakken||{}));
+  // Coach / coordinator toewijzing
+  _buildEstuAssignSection(stu);
   document.getElementById('estu-err').style.display='none';
   document.getElementById('modal-edit-stu').classList.add('show');
   setTimeout(()=>document.getElementById('estu-name').focus(),60);
@@ -3165,10 +3737,47 @@ function saveEditStu(){
   document.querySelectorAll('#estu-pws-dots .pws-admin-dot').forEach((el,i)=>{
     pwsDots[i]=parseInt(el.dataset.val||'0');
   });
+  // Collect coach/coordinator assignments
+  const assignedCoaches=[...document.querySelectorAll('#estu-assign-coaches .estu-assign-chip.on')].map(c=>c.dataset.email);
+  const assignedCoords=[...document.querySelectorAll('#estu-assign-coords .estu-assign-chip.on')].map(c=>c.dataset.email);
   const stu=S.students.find(s=>s.id===id);
-  if(stu){ stu.name=name; stu.klass=klass; stu.year=year; stu.vakken=vakken; stu.sport=sport; stu.pws=hasPws; stu.pwsDots=hasPws?pwsDots:[0,0,0,0,0]; }
+  if(stu){ stu.name=name; stu.klass=klass; stu.year=year; stu.vakken=vakken; stu.sport=sport; stu.pws=hasPws; stu.pwsDots=hasPws?pwsDots:[0,0,0,0,0]; stu.coaches=assignedCoaches; stu.coordinators=assignedCoords; }
   persist(); closeEditStu(); renderStudentsList();
   if(S.currentStudentId===id) updateStudentBar();
+}
+
+function _buildEstuAssignSection(stu){
+  const ct=document.getElementById('estu-assign-ct');
+  ct.innerHTML='';
+  // Get all coaches and coordinators from roleMap
+  const coaches=Object.entries(S.roleMap).filter(([,m])=>m.role==='coach').map(([email])=>email);
+  const coords=Object.entries(S.roleMap).filter(([,m])=>m.role==='coordinator').map(([email])=>email);
+  if(!coaches.length && !coords.length) return; // geen accounts aanwezig — sectie verbergen
+  function buildChips(arr, assigned, containerId, label){
+    if(!arr.length) return;
+    const wrap=document.createElement('div'); wrap.style.marginBottom='.65rem';
+    const lbl=document.createElement('label'); lbl.className='flabel';
+    lbl.style.cssText='margin-bottom:.35rem;display:block;';
+    lbl.textContent=label;
+    wrap.appendChild(lbl);
+    const chips=document.createElement('div');
+    chips.id=containerId; chips.style.cssText='display:flex;flex-wrap:wrap;gap:.3rem;';
+    arr.forEach(email=>{
+      const chip=document.createElement('button');
+      chip.type='button'; chip.className='estu-assign-chip'+(assigned.includes(email)?' on':'');
+      chip.dataset.email=email;
+      // show name part of email
+      const name=email.split('@')[0].split('.').map(p=>p.charAt(0).toUpperCase()+p.slice(1)).join(' ');
+      chip.textContent=name;
+      chip.title=email;
+      chip.addEventListener('click',()=>chip.classList.toggle('on'));
+      chips.appendChild(chip);
+    });
+    wrap.appendChild(chips);
+    ct.appendChild(wrap);
+  }
+  buildChips(coaches, stu.coaches||[], 'estu-assign-coaches', '👤 Gekoppelde coaches');
+  buildChips(coords,  stu.coordinators||[], 'estu-assign-coords',  '🎓 Gekoppelde coordinatoren');
 }
 
 /* ══ BESCHIKBAARHEID ════════════════════════════════ */
@@ -3814,7 +4423,18 @@ function showCijfersScreen(){
   document.getElementById('screen-admin').classList.remove('show');
   document.getElementById('screen-verg').classList.remove('show');
   document.getElementById('screen-cijfers').classList.add('show');
-  renderCijfersList();
+  // Haal verse data op vanuit Supabase zodat alle docenten elkaars cijfers zien
+  if(_currentSchoolId){
+    const chip = document.getElementById('cij-sync-chip');
+    if(chip){ chip.textContent='⟳ Laden…'; chip.style.display=''; }
+    spLoad().then(()=>{
+      hydrate();
+      renderCijfersList();
+      if(chip){ chip.textContent='✓ Bijgewerkt'; setTimeout(()=>{ chip.style.display='none'; },2000); }
+    }).catch(()=>{ renderCijfersList(); if(chip) chip.style.display='none'; });
+  } else {
+    renderCijfersList();
+  }
 }
 
 function hideCijfersScreen(){
@@ -4897,6 +5517,7 @@ function showMain(){
   document.getElementById('screen-admin').classList.remove('show');
   document.getElementById('screen-verg').classList.remove('show');
   document.getElementById('screen-cijfers').classList.remove('show');
+  document.getElementById('screen-display').classList.remove('show');
   document.getElementById('screen-main').classList.add('show');
   const pillLabel=(S.role==='docent'&&S.docentVak)
     ? 'Docent '+S.docentVak
@@ -4904,9 +5525,10 @@ function showMain(){
   document.getElementById('role-pill').textContent=pillLabel;
   const canEdit=S.role==='coordinator'||S.role==='coach';
   document.getElementById('hdr-edit-zone').style.display=canEdit?'flex':'none';
-  // Admin-knop alleen zichtbaar voor coach en coordinator (M365-ingelogd)
+  // Admin-knop: zichtbaar voor coach/coordinator én alleen als superadmin (of lijst leeg = iedereen)
   const btnAdm=document.getElementById('btn-admin-header');
-  if(btnAdm) btnAdm.style.display=canEdit?'':'none';
+  const isSuperadmin = !S.superadmins.length || S.superadmins.includes(S.loggedInEmail||'');
+  if(btnAdm) btnAdm.style.display=(canEdit && isSuperadmin)?'':'none';
   const sez=document.getElementById('stu-edit-zone');
   if(sez) sez.style.display=canEdit?'flex':'none';
   const bsr=document.getElementById('btn-std-rooster');
@@ -4915,29 +5537,41 @@ function showMain(){
   if(bgp) bgp.style.display=S.role==='coach'?'':'none';
   document.getElementById('hdr-docent-zone').style.display=S.role==='docent'?'flex':'none';
   document.getElementById('hdr-leerling-zone').style.display=S.role==='leerling'?'flex':'none';
+  // Display rol: eigen header knoppen, geen reguliere logout
+  const isDisplay=S.role==='display';
+  const dispZone=document.getElementById('hdr-display-zone');
+  if(dispZone) dispZone.style.display=isDisplay?'flex':'none';
+  const mainLogout=document.getElementById('btn-main-logout');
+  if(mainLogout) mainLogout.style.display=isDisplay?'none':'';
   // Ouder: read-only, geen knoppen
   updateEditUI(); updateStudentBar(); renderWeekNav(); renderSchedule();
   // Coach: show change log popup after render
   if(S.role==='coach'){
     setTimeout(checkCoachChanges, 300);
   }
+  // Start achtergrond-refresh voor niet-leerling rollen (eenmalig per sessie)
+  if(S.role!=='leerling') _startHwAutoRefresh();
 }
 
 /* ── Student navigation ── */
+let _stuVakkenCache = []; // vakken van de actief getoonde leerling, bijgehouden door updateStudentBar
+
 function updateStudentBar(){
   const nd=document.getElementById('stu-name-d');
   const md=document.getElementById('stu-meta-d');
-  const ct=document.getElementById('stu-counter');
-  const prev=document.getElementById('stu-prev');
-  const next=document.getElementById('stu-next');
-  // Leerling en ouder zijn vergrendeld op één profiel — verberg navigatie
-  const isLocked=S.role==='leerling'||S.role==='ouder';
-  prev.style.display=isLocked?'none':'';
-  next.style.display=isLocked?'none':'';
-  ct.style.display=isLocked?'none':'';
-  const sw=document.getElementById('stu-search-wrap');
-  if(sw) sw.style.display=isLocked?'none':'';
+  // Leerling, ouder en display zijn vergrendeld op één profiel — verberg nav + zoek
+  const isLocked=S.role==='leerling'||S.role==='ouder'||S.role==='display';
+  const prevBtn=document.getElementById('btn-stu-prev');
+  const nextBtn=document.getElementById('btn-stu-next');
+  const searchBtn=document.getElementById('btn-stu-search');
+  if(prevBtn) prevBtn.style.display=isLocked?'none':'';
+  if(nextBtn) nextBtn.style.display=isLocked?'none':'';
+  if(searchBtn) searchBtn.style.display=isLocked?'none':'';
   // Voor leerling/ouder: altijd vastzetten op eigen ID (ook als localStorage iets anders heeft)
+  // Als leerlingStudentId niet gezet is maar currentStudentId wel, zet hem dan gelijk (M365 fallback)
+  if(isLocked && !S.leerlingStudentId && S.currentStudentId){
+    S.leerlingStudentId=S.currentStudentId;
+  }
   if(isLocked && S.leerlingStudentId){
     S.currentStudentId=S.leerlingStudentId;
   }
@@ -4947,15 +5581,19 @@ function updateStudentBar(){
     S.currentStudentId=vis[0].id;
   }
   if(!vis.length){
-    nd.textContent='Geen leerlingen'; md.textContent='Geen leerlingen voor dit vak';
-    ct.textContent=''; prev.disabled=true; next.disabled=true; return;
+    if(nd) nd.textContent='Geen leerlingen'; if(md) md.textContent='Geen leerlingen voor dit vak';
+    return;
   }
   const idx=vis.findIndex(s=>s.id===S.currentStudentId);
+  // Update nav-knop disabled state
+  if(prevBtn) prevBtn.disabled=idx<=0;
+  if(nextBtn) nextBtn.disabled=idx>=vis.length-1;
   const stu=vis[idx];
   nd.textContent=stu ? stu.name + (stu.sport ? ' · ' + stu.sport : '') : '—';
   md.textContent=stu?stuLabel(stu):'—';
   const vd=document.getElementById('stu-vakken');
   const vakken=getActiveVakken(stu);
+  _stuVakkenCache=vakken; // cache bijhouden zodat hw-panel exact hetzelfde ziet
   const pid=getActivePeriodId(stu);
   const pidLabel=pid ? (() => {
     const all=[...EXAM_PERIODS,...PREEXAM_PERIODS]; const p=all.find(x=>x.id===pid); return p?p.label:'';
@@ -4973,11 +5611,6 @@ function updateStudentBar(){
     vdHtml+=`<span style="display:inline-flex;align-items:center;gap:.3rem;margin-left:.5rem;"><span class="stu-vchip" style="background:rgba(255,255,255,.38);color:#fff;">PWS</span>${dots}${pencil}</span>`;
   }
   vd.innerHTML=vdHtml;
-  if(!isLocked){
-    ct.textContent=(idx+1)+' / '+vis.length;
-    prev.disabled=idx<=0;
-    next.disabled=idx>=vis.length-1;
-  }
 }
 
 function prevStudent(){
@@ -5001,6 +5634,14 @@ function visibleStudents(){
   }
   if(S.role==='docent' && S.docentVak){
     return S.students.filter(stu=>getActiveVakken(stu).includes(S.docentVak));
+  }
+  // Coach: toon alleen leerlingen waarbij deze coach gekoppeld is (of leerling zonder coaches)
+  if(S.role==='coach' && S.loggedInEmail){
+    return S.students.filter(stu=>!stu.coaches?.length || stu.coaches.includes(S.loggedInEmail));
+  }
+  // Coordinator: toon alleen leerlingen waarbij deze coordinator gekoppeld is (of leerling zonder coordinators)
+  if(S.role==='coordinator' && S.loggedInEmail){
+    return S.students.filter(stu=>!stu.coordinators?.length || stu.coordinators.includes(S.loggedInEmail));
   }
   return S.students;
 }
@@ -5056,10 +5697,20 @@ function confirmLogout(){
 
 function doLogout(){
   document.getElementById('modal-logout-confirm').classList.remove('show');
-  S.role=null; S.editMode=false; S.docentVak=null; S.leerlingStudentId=null;
+  S.role=null; S.editMode=false; S.docentVak=null;
+  S.leerlingStudentId=null; S.currentStudentId=null; S.loggedInEmail=null;
+  _hwAutoRefreshInterval=null; // reset zodat volgende login opnieuw kan starten
+  // Wis geselecteerde leerling zodat volgende inlog altijd zijn/haar eigen rooster ziet
+  try{ localStorage.removeItem('wp_curStu'); }catch(e){}
+  // Sluit hw-sidebar indien open
+  const _hwSb=document.getElementById('hw-sidebar');
+  if(_hwSb) _hwSb.classList.remove('open');
+  const _hwBtn=document.getElementById('btn-hw-toggle');
+  if(_hwBtn) _hwBtn.classList.remove('hw-active');
   document.getElementById('screen-roles').style.display='';
   document.getElementById('screen-main').classList.remove('show');
   document.getElementById('screen-admin').classList.remove('show');
+  document.getElementById('screen-display').classList.remove('show');
 }
 
 function syncThenLogout(){
@@ -5070,7 +5721,7 @@ function syncThenLogout(){
   // Trigger sync and wait a moment for it to finish
   persist();
   setTimeout(()=>{
-    if(false){ // M365 niet beschikbaar:
+    if(_currentSchoolId){
       spSyncAll().then(()=>{ doLogout(); }).catch(()=>{ doLogout(); });
     } else {
       doLogout();
@@ -5334,30 +5985,70 @@ function executePrint(){
     </div>`;
   });
 
-  const css=`
-    *{box-sizing:border-box;margin:0;padding:0;}
-    body{font-family:Arial,Helvetica,sans-serif;background:#fff;color:#222;}
-    @page{size:A4 landscape;margin:0;}
-    table{border-collapse:collapse;}
-    td,th{vertical-align:middle;}
-    -webkit-print-color-adjust:exact;
-    @media print{
-      html,body{width:297mm;height:210mm;}
-      div[style*="page-break-after"]{page-break-after:always;}
-      div[style*="page-break-after"]:last-child{page-break-after:avoid;}
-    }`;
+  // Controleer of er daadwerkelijk pagina-inhoud is gegenereerd
+  const nonEmpty=pages.filter(p=>p.trim()!=='');
+  if(!nonEmpty.length){
+    alert('Geen roosterdata gevonden voor de geselecteerde leerlingen.');
+    return;
+  }
 
-  const html=`<!DOCTYPE html><html><head><meta charset="utf-8">
-    <title>Weekplanning — Week ${week} ${year}</title>
-    <style>${css}</style>
-  </head><body style="-webkit-print-color-adjust:exact;print-color-adjust:exact;">${pages.join('')}</body></html>`;
+  // Bouw volledig zelfstandig HTML-document
+  // @page margin=0: de page-divs zelf hebben al margin:10mm 12mm ingebakken,
+  // zodat div+marges precies A4 landscape (297×210mm) vullen.
+  const fullHtml=`<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<title>Weekplanning ${nonEmpty.length} leerlingen — Week ${week} / ${year}</title>
+<style>
+*{box-sizing:border-box;}
+body{margin:0;padding:0;background:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+@page{size:A4 landscape;margin:0;}
+table{border-collapse:collapse;}
+td,th{vertical-align:middle;}
+.hint{font-family:system-ui,sans-serif;font-size:10pt;color:#333;
+      padding:8mm 12mm;border:1.5pt solid #C85A00;border-radius:6pt;
+      margin:8mm auto;max-width:260mm;background:#FEF0E2;line-height:1.6;}
+.hint b{color:#C85A00;}
+@media print{.hint{display:none;}}
+</style>
+</head>
+<body>
+<div class="hint" id="hint-box">
+  ✓ <b>${nonEmpty.length} weekplanningen</b> geladen.<br>
+  Het printvenster opent automatisch. Let op:<br>
+  &nbsp;① Stel <b>Richting → Liggend</b> in (Safari doet dit niet automatisch)<br>
+  &nbsp;② Zet <b>Druk achtergronden af</b> aan (voor kleur in cellen)<br>
+  &nbsp;③ Klik <b>Druk af</b> — sluit dit venster daarna zelf.
+</div>
+${pages.join('')}
+<script>
+window.addEventListener('afterprint',function(){
+  var h=document.getElementById('hint-box');
+  if(h) h.innerHTML='✓ Printopdracht verstuurd.<br><b>Je kunt dit venster nu sluiten.</b>';
+});
+<\/script>
+</body>
+</html>`;
 
-  const w=window.open('','_blank','width=900,height=750,menubar=yes,toolbar=yes');
-  w.document.write(html);
-  w.document.close();
-  w.focus();
-  // Small delay so browser renders before print dialog
-  setTimeout(()=>{ try{w.print();}catch(e){} },800);
+  // Blob URL aanpak: robuuster dan document.write in popup
+  try{
+    const blob=new Blob([fullHtml],{type:'text/html;charset=utf-8'});
+    const url=URL.createObjectURL(blob);
+    const pw=window.open(url,'_blank');
+    setTimeout(()=>URL.revokeObjectURL(url),120000);
+    if(!pw){
+      URL.revokeObjectURL(url);
+      alert('Pop-up blokkering actief. Sta pop-ups toe voor deze pagina en probeer opnieuw.');
+    }
+  }catch(e){
+    // Fallback: document.write
+    const pw=window.open('','_blank','width=1200,height=850,scrollbars=yes,toolbar=yes');
+    if(!pw){ alert('Pop-up blokkering actief. Sta pop-ups toe voor deze pagina.'); return; }
+    pw.document.open();
+    pw.document.write(fullHtml);
+    pw.document.close();
+  }
 }
 
 /* ── Week / month navigation ── */
@@ -5377,6 +6068,12 @@ function canGoNext(){
     const{year:y,month:m}=S.currentMonth;
     return new Date(y,m,1) < new Date(t.getFullYear(),t.getMonth(),1);
   }
+  // 4wk: check that week+3 doesn't go beyond schoolYear end
+  if(S.viewMode==='4wk'){
+    let{week:w,year:y}=S.wy;
+    for(let i=0;i<3;i++){ w++; if(w>isoWeek(new Date(y,11,28))){w=1;y++;} }
+    return weekDates(y,w)[6] < t;
+  }
   return weekDates(S.wy.year,S.wy.week)[6] < t;
 }
 function updateNavBtns(){
@@ -5384,8 +6081,24 @@ function updateNavBtns(){
   document.getElementById('nav-next').disabled=!canGoNext();
 }
 
-function navPrev(){ if(canGoPrev()) S.viewMode==='month' ? prevMonth() : prevWeek(); }
-function navNext(){ if(canGoNext()) S.viewMode==='month' ? nextMonth() : nextWeek(); }
+function navPrev(){
+  if(!canGoPrev()) return;
+  if(S.viewMode==='month'){ prevMonth(); return; }
+  if(S.viewMode==='4wk'){ _shiftWy(-4); renderWeekNav(); renderSchedule(); return; }
+  prevWeek();
+}
+function navNext(){
+  if(!canGoNext()) return;
+  if(S.viewMode==='month'){ nextMonth(); return; }
+  if(S.viewMode==='4wk'){ _shiftWy(4); renderWeekNav(); renderSchedule(); return; }
+  nextWeek();
+}
+function _shiftWy(delta){
+  let{week:w,year:y}=S.wy;
+  if(delta>0){ for(let i=0;i<delta;i++){ w++; if(w>isoWeek(new Date(y,11,28))){w=1;y++;} } }
+  else { for(let i=0;i<-delta;i++){ w--; if(w<1){y--;w=isoWeek(new Date(y,11,28));} } }
+  S.wy={week:w,year:y};
+}
 
 function goToToday(){
   const now=new Date();
@@ -5397,12 +6110,12 @@ function goToToday(){
 function prevWeek(){
   let{week:w,year:y}=S.wy;
   w--; if(w<1){y--;w=isoWeek(new Date(y,11,28));}
-  S.wy={week:w,year:y}; renderWeekNav(); renderSchedule();
+  S.wy={week:w,year:y}; renderWeekNav(); updateStudentBar(); renderSchedule();
 }
 function nextWeek(){
   let{week:w,year:y}=S.wy;
   w++; if(w>isoWeek(new Date(y,11,28))){w=1;y++;}
-  S.wy={week:w,year:y}; renderWeekNav(); renderSchedule();
+  S.wy={week:w,year:y}; renderWeekNav(); updateStudentBar(); renderSchedule();
 }
 function prevMonth(){
   let{year:y,month:m}=S.currentMonth;
@@ -5414,19 +6127,31 @@ function nextMonth(){
   m++; if(m>11){m=0;y++;} S.currentMonth={year:y,month:m};
   renderWeekNav(); renderSchedule();
 }
-function toggleViewMode(){
-  S.viewMode=S.viewMode==='week'?'month':'week';
+function toggleMonthMode(){
+  S.viewMode=S.viewMode==='month'?'week':'month';
   if(S.viewMode==='month'){
     const dates=weekDates(S.wy.year,S.wy.week);
     const mid=dates[2];
     S.currentMonth={year:mid.getFullYear(),month:mid.getMonth()};
   }
+  _syncViewModeBtns();
+  renderWeekNav(); renderSchedule();
+}
+function toggle4WkMode(){
+  S.viewMode=S.viewMode==='4wk'?'week':'4wk';
+  _syncViewModeBtns();
+  renderWeekNav(); renderSchedule();
+}
+// Keep for backward compat (old onclick references)
+function toggleViewMode(){ toggleMonthMode(); }
+function _syncViewModeBtns(){
   document.getElementById('btn-month').classList.toggle('on',S.viewMode==='month');
+  document.getElementById('btn-4wk').classList.toggle('on',S.viewMode==='4wk');
   const pv=document.getElementById('nav-prev');
   const nx=document.getElementById('nav-next');
-  pv.textContent=S.viewMode==='month'?'‹ Vorige maand':'‹ Vorige';
-  nx.textContent=S.viewMode==='month'?'Volgende maand ›':'Volgende ›';
-  renderWeekNav(); renderSchedule();
+  const isMonth=S.viewMode==='month';
+  pv.textContent=isMonth?'‹ Vorige maand':'‹ Vorige';
+  nx.textContent=isMonth?'Volgende maand ›':'Volgende ›';
 }
 function renderWeekNav(){
   const now=new Date();
@@ -5437,6 +6162,16 @@ function renderWeekNav(){
     document.getElementById('wk-num').textContent=MONTHS_FULL[m]+' '+y;
     document.getElementById('wk-range').textContent=S.schoolYear;
     isToday=(y===now.getFullYear()&&m===now.getMonth());
+  } else if(S.viewMode==='4wk'){
+    const{week:w,year:y}=S.wy;
+    // Compute end of 4th week
+    let ew=w,ey=y;
+    for(let i=0;i<3;i++){ ew++; if(ew>isoWeek(new Date(ey,11,28))){ew=1;ey++;} }
+    const dates0=weekDates(y,w);
+    const dates3=weekDates(ey,ew);
+    document.getElementById('wk-num').textContent='4 weken — week '+w+' t/m '+ew;
+    document.getElementById('wk-range').textContent=fmt(dates0[0])+' t/m '+fmt(dates3[6]);
+    isToday=(w===todayWy.week&&y===todayWy.year);
   } else {
     const{week:w,year:y}=S.wy;
     const dates=weekDates(y,w);
@@ -5446,6 +6181,7 @@ function renderWeekNav(){
   }
   const tb=document.getElementById('btn-today');
   if(tb) tb.classList.toggle('is-today',isToday);
+  _syncViewModeBtns();
   updateNavBtns();
 }
 
@@ -5507,8 +6243,65 @@ function setNote(weekKey,di,sid,color,text){
 }
 
 /* ══ RENDER SCHEDULE ════════════════════════════════ */
+function renderDisplayTakenPanel(){
+  const panel=document.getElementById('display-taken-panel');
+  if(!panel) return;
+  const isDisplayWeek=S.role==='display' && S.viewMode==='week';
+  panel.style.display=isDisplayWeek?'':'none';
+  if(!isDisplayWeek) return;
+  const ct=document.getElementById('display-taken-list');
+  if(!ct) return;
+  const key=wk(S.wy.year,S.wy.week);
+  const hw=(S.huiswerk||[]).filter(h=>
+    h.studentId===S.currentStudentId &&
+    h.slotId!==null &&
+    h.weekKey===key
+  );
+  if(!hw.length){
+    ct.innerHTML='<div class="display-taken-empty">Geen gemaakte taken deze week.</div>';
+    return;
+  }
+  // Group by vak
+  const byVak={};
+  hw.forEach(h=>{
+    const v=h.vak||'Overig';
+    if(!byVak[v]) byVak[v]=[];
+    byVak[v].push(h);
+  });
+  // Sort within each vak by les
+  Object.values(byVak).forEach(arr=>arr.sort((a,b)=>(a.les||0)-(b.les||0)));
+  ct.innerHTML='';
+  Object.entries(byVak).sort(([a],[b])=>a.localeCompare(b,'nl')).forEach(([vak,items])=>{
+    const vakEl=document.createElement('div');
+    vakEl.className='display-taken-vak';
+    const vnEl=document.createElement('div');
+    vnEl.className='display-taken-vak-name';
+    vnEl.textContent=vak;
+    vakEl.appendChild(vnEl);
+    items.forEach(h=>{
+      const row=document.createElement('div');
+      row.className='display-taken-item';
+      const lesEl=document.createElement('span');
+      lesEl.className='display-taken-les';
+      lesEl.textContent='Les '+(h.les||'?');
+      const opmEl=document.createElement('span');
+      opmEl.className='display-taken-opm';
+      opmEl.textContent=h.opmerking||'—';
+      row.appendChild(lesEl);
+      row.appendChild(opmEl);
+      vakEl.appendChild(row);
+    });
+    ct.appendChild(vakEl);
+  });
+}
+
 function renderSchedule(){
-  if(S.viewMode==='month'){ renderMonthView(); return; }
+  // Veiligheidsgrondel: leerling/ouder ziet ALTIJD alleen eigen rooster
+  if((S.role==='leerling'||S.role==='ouder') && S.leerlingStudentId){
+    S.currentStudentId=S.leerlingStudentId;
+  }
+  if(S.viewMode==='month'){ renderDisplayTakenPanel(); renderMonthView(); return; }
+  if(S.viewMode==='4wk'){ renderDisplayTakenPanel(); render4WkView(); return; }
   const{week:w,year:y}=S.wy;
   const dates=weekDates(y,w);
   const key=wk(y,w);
@@ -5523,7 +6316,50 @@ function renderSchedule(){
   const area=document.getElementById('sched-area');
   area.innerHTML='';
   area.appendChild(buildGrid(slots,dates,dayIdxs,dayNames,key,editable));
+  renderAllHwPictos();
+  _setupSchedAreaDrop();
   // Update student bar so vakken chips reflect the period of the viewed week
+  updateStudentBar();
+  renderDisplayTakenPanel();
+}
+
+/* ══ 4-WEKEN VIEW ═══════════════════════════════════ */
+function render4WkView(){
+  const area=document.getElementById('sched-area');
+  area.innerHTML='';
+  const slots=[];
+  if(S.showExtra) slots.push(...MORNING);
+  slots.push(...SCHOOL);
+  if(S.showExtra) slots.push(...EVENING);
+  const dayIdxs=[0,1,2,3,4];
+  const dayNames=[...DAYS_FULL];
+  if(S.showWeekend){ dayIdxs.push(5,6); dayNames.push('Zaterdag','Zondag'); }
+  const editable=false; // read-only in 4wk view
+  const wrapper=document.createElement('div');
+  wrapper.className='four-wk-grid';
+  // Build 4 consecutive weeks starting from S.wy
+  let{week:w,year:y}=S.wy;
+  for(let i=0;i<4;i++){
+    const dates=weekDates(y,w);
+    const key=wk(y,w);
+    const cell=document.createElement('div');
+    cell.className='four-wk-cell';
+    const hdr=document.createElement('div');
+    hdr.className='four-wk-hdr';
+    const now=new Date(); const todayWy=weekYear(now);
+    const isNow=(w===todayWy.week&&y===todayWy.year);
+    hdr.textContent=(isNow?'📍 ':'')+'Week '+w+' — '+fmt(dates[0])+' t/m '+fmt(dates[4]);
+    const body=document.createElement('div');
+    body.className='four-wk-body';
+    body.appendChild(buildGrid(slots,dates,dayIdxs,dayNames,key,editable));
+    cell.appendChild(hdr);
+    cell.appendChild(body);
+    wrapper.appendChild(cell);
+    // Advance to next week
+    w++; if(w>isoWeek(new Date(y,11,28))){w=1;y++;}
+  }
+  area.appendChild(wrapper);
+  renderAllHwPictos();
   updateStudentBar();
 }
 
@@ -5710,7 +6546,13 @@ function buildGrid(slots,dates,dayIdxs,dayNames,key,editable){
       } else {
         const c=getColor(key,di,slot.id);
         const _cellTime=curData().std?.times?.[di]?.[slot.id]||null;
-        applyCell(cell,c,_cellTime);
+        const _cellVak=curData().std?.vakken?.[di]?.[slot.id]||'';
+        applyCell(cell,c,_cellTime,_cellVak);
+        // Huiswerk drop-target attributes
+        cell.dataset.hwKey=key;
+        cell.dataset.hwDi=String(di);
+        cell.dataset.hwSlot=slot.id;
+        cell.dataset.hwDate=toDS(dates[di]);
         _refreshNoteUI(cell,c,key,di,slot,editable);
         _refreshToetsBtn(cell,c,key,di,slot,slots,dates,editable);
         // Beschikbaarheid circles (only for leerling/ouder/coach/coordinator view)
@@ -5808,6 +6650,7 @@ function buildGrid(slots,dates,dayIdxs,dayNames,key,editable){
 
 // Kleurkiezer: 7 gekleurde rondjes bovenin de cel in bewerkmodus
 const _PICKER_COLORS = [null,'green','red','rose','blue','purple','yellow','orange'];
+const _STD_PICKER_COLORS = [null,'green','red','rose','blue']; // Wedstrijd/Toets/Toernooi alleen via weekplanning
 const _PICKER_BG = {
   green:'#D4EDDA', red:'#F8D7DA', rose:'#FFE2DC',
   blue:'#D1E8FF', purple:'#E8D5F5', yellow:'#FFFDE7', orange:'#FFD9A8'
@@ -5834,7 +6677,7 @@ function _buildCellPicker(cell, currentColor, key, di, slot, slots, dates){
         _clearToetsData(key,di,slot.id);
       }
       setOvr(key,di,slot.id,clr);
-      applyCell(cell,clr,curData().std?.times?.[di]?.[slot.id]||null);
+      applyCell(cell,clr,curData().std?.times?.[di]?.[slot.id]||null,curData().std?.vakken?.[di]?.[slot.id]||'');
       _buildCellPicker(cell,clr,key,di,slot,slots,dates); // rebuild picker with new active dot
       _refreshNoteUI(cell,clr,key,di,slot,true);
       _refreshToetsBtn(cell,clr,key,di,slot,slots,dates,true);
@@ -5846,7 +6689,7 @@ function _buildCellPicker(cell, currentColor, key, di, slot, slots, dates){
   cell.insertBefore(picker, cell.firstChild);
 }
 
-function applyCell(cell,c,time){
+function applyCell(cell,c,time,vak){
   if(c) cell.setAttribute('data-c',c); else cell.removeAttribute('data-c');
   cell.classList.remove('toets-partial','toets-late-start');
   cell.style.removeProperty('--toets-fill');
@@ -5858,7 +6701,8 @@ function applyCell(cell,c,time){
   if(c){
     const lbl=document.createElement('div'); lbl.className='cell-lbl';
     // Don't show standaardrooster time on yellow (toets) cells
-    lbl.textContent=(COLOR_LBL[c]||'') + (time && c!=='yellow' ? ' ('+time+')' : '');
+    let lblTxt = (c==='green'&&vak) ? 'Les: '+vak : (COLOR_LBL[c]||'');
+    lbl.textContent=lblTxt + (time && c!=='yellow' ? ' ('+time+')' : '');
     cell.appendChild(lbl);
   }
 }
@@ -5894,13 +6738,13 @@ function _refreshToetsBtn(cell, c, key, di, slot, slots, dates, editable){
 function _refreshNoteUI(cell, c, key, di, slot, editable){
   const oldInp=cell.querySelector('.cell-note-input'); if(oldInp) oldInp.remove();
   const oldTxt=cell.querySelector('.cell-note'); if(oldTxt) oldTxt.remove();
-  if(c!=='rose'&&c!=='purple'&&c!=='orange') return;
+  if(!c) return;
   if(editable){
     // Inline text input — saves automatically on blur/debounce
     const inp=document.createElement('input');
     inp.type='text';
     inp.className='cell-note-input';
-    const placeholder={rose:'Overig afwezig…',purple:'Opmerking…',orange:'Opmerking…'};
+    const placeholder={green:'Opmerking…',red:'Opmerking…',rose:'Overig afwezig…',blue:'Opmerking…',purple:'Opmerking…',yellow:'Opmerking…',orange:'Opmerking…'};
     inp.placeholder=placeholder[c]||'Opmerking…';
     inp.value=getNote(key,di,slot.id,c);
     inp.addEventListener('click',e=>e.stopPropagation());
@@ -5920,16 +6764,370 @@ function _refreshNoteUI(cell, c, key, di, slot, editable){
   }
 }
 
+/* ══ HUISWERK ════════════════════════════════════════ */
+function toggleHwPanel(){
+  const panel=document.getElementById('hw-sidebar');
+  const btn=document.getElementById('btn-hw-toggle');
+  if(!panel||!btn) return;
+  const open=panel.classList.toggle('open');
+  btn.classList.toggle('hw-active',open);
+  if(open){
+    _populateHwVakSelect();
+    renderHwTray();
+  } else {
+    // Sync to Supabase when closing
+    if(_currentSchoolId) scheduleSbSync();
+  }
+}
+
+function _hwVakkenForStudent(stu){
+  // Gebruik altijd de cache van de student bar (gegarandeerd identiek aan wat de leerlingzoeker toont).
+  // Fallback naar getActiveVakken als de cache nog leeg is (bijv. bij eerste load).
+  if(!stu) return [];
+  if(_stuVakkenCache && _stuVakkenCache.length) return _stuVakkenCache;
+  return getActiveVakken(stu);
+}
+function _populateHwVakSelect(){
+  const sel=document.getElementById('hw-vak');
+  if(!sel) return;
+  // Leerling ziet altijd eigen vakken; coaches/coordinatoren zien de geselecteerde leerling
+  const hwStuId=(S.role==='leerling'||S.role==='ouder')?(S.leerlingStudentId||S.currentStudentId):S.currentStudentId;
+  const stu=S.students.find(s=>s.id===hwStuId);
+  const vakken=_hwVakkenForStudent(stu);
+  sel.innerHTML='<option value="">— vak —</option>'+vakken.map(v=>`<option value="${v}">${v}</option>`).join('');
+}
+
+function saveHwItem(){
+  const vakVal=(document.getElementById('hw-vak')?.value||'').trim();
+  const opmVal=(document.getElementById('hw-inp-opm')?.value||'').trim().slice(0,20);
+  if(!vakVal){ alert('Selecteer een vak.'); return; }
+  const hwStuId=(S.role==='leerling'||S.role==='ouder')?(S.leerlingStudentId||S.currentStudentId):S.currentStudentId;
+  if(!hwStuId){ alert('Geen leerling geselecteerd.'); return; }
+  const item={
+    id:uid(),
+    studentId:hwStuId,
+    vak:vakVal,
+    week:null,
+    les:null,
+    opmerking:opmVal,
+    weekKey:null,
+    di:null,
+    slotId:null,
+    ts:Date.now()
+  };
+  S.huiswerk.push(item);
+  persist();
+  document.getElementById('hw-vak').value='';
+  document.getElementById('hw-inp-opm').value='';
+  renderHwTray();
+}
+
+function renderHwTray(){
+  const tray=document.getElementById('hw-tray');
+  if(!tray) return;
+  const hwStuId=(S.role==='leerling'||S.role==='ouder')?(S.leerlingStudentId||S.currentStudentId):S.currentStudentId;
+  const unplaced=(S.huiswerk||[]).filter(h=>h.studentId===hwStuId && h.slotId===null);
+  tray.innerHTML='';
+  if(!unplaced.length){
+    tray.innerHTML='<span class="hw-tray-empty">Geen openstaande items</span>';
+    return;
+  }
+  unplaced.forEach(h=>{
+    const card=document.createElement('div');
+    card.className='hw-card';
+    card.draggable=true;
+    card.dataset.hwId=h.id;
+    const lbl=`${h.vak||'HW'}${h.opmerking?' – '+h.opmerking:''}`;
+    card.innerHTML=`<span class="hw-card-icon">📖</span><span class="hw-card-text" title="${lbl}">${lbl}</span><button class="hw-card-del" title="Verwijder" onclick="deleteHwItem('${h.id}')">✕</button>`;
+    card.addEventListener('dragstart',e=>{
+      card.classList.add('hw-dragging');
+      e.dataTransfer.setData('text/hw-id',h.id);
+      e.dataTransfer.effectAllowed='move';
+    });
+    card.addEventListener('dragend',()=>card.classList.remove('hw-dragging'));
+    tray.appendChild(card);
+  });
+}
+
+function deleteHwItem(id){
+  S.huiswerk=(S.huiswerk||[]).filter(h=>h.id!==id);
+  persist();
+  renderHwTray();
+  renderAllHwPictos();
+  // Sync after delete
+  if(_currentSchoolId) scheduleSbSync();
+}
+
+// ── HW detail popup (click on placed picto) ──
+function _openHwPopup(hwId){
+  _hideHwTip();
+  const h=(S.huiswerk||[]).find(x=>x.id===hwId);
+  if(!h) return;
+  const isLeerling=S.role==='leerling'&&h.studentId===S.currentStudentId;
+  // Remove any existing popup
+  document.getElementById('hw-popup-overlay')?.remove();
+  const ov=document.createElement('div');
+  ov.className='hw-popup-overlay';
+  ov.id='hw-popup-overlay';
+  const pop=document.createElement('div');
+  pop.className='hw-popup';
+  // View mode (default)
+  function renderView(){
+    pop.innerHTML=`
+      <div class="hw-popup-title">📖 Huiswerk</div>
+      <div class="hw-popup-row"><span class="hw-popup-label">Vak:</span><span class="hw-popup-val">${h.vak||'—'}</span></div>
+      <div class="hw-popup-row"><span class="hw-popup-label">Opmerking:</span><span class="hw-popup-val">${h.opmerking||'—'}</span></div>
+      <div class="hw-popup-actions">
+        ${isLeerling?`<button class="hw-popup-del-btn" id="hw-pop-del">Verwijderen</button><button class="hw-popup-edit-btn" id="hw-pop-edit">✏️ Bewerken</button>`:''}
+        <button class="hw-popup-cancel-btn" id="hw-pop-close">Sluiten</button>
+      </div>`;
+    pop.querySelector('#hw-pop-close')?.addEventListener('click',()=>ov.remove());
+    pop.querySelector('#hw-pop-del')?.addEventListener('click',()=>{ ov.remove(); deleteHwItem(h.id); });
+    pop.querySelector('#hw-pop-edit')?.addEventListener('click',renderEdit);
+  }
+  // Edit mode
+  function renderEdit(){
+    const stu=S.students.find(s=>s.id===S.currentStudentId);
+    const vakken=stu?getActiveVakken(stu):[];
+    const vakOpts=vakken.map(v=>`<option value="${v}"${v===h.vak?' selected':''}>${v}</option>`).join('');
+    pop.innerHTML=`
+      <div class="hw-popup-title">✏️ Huiswerk bewerken</div>
+      <div class="hw-popup-row"><span class="hw-popup-label">Vak:</span>
+        <select class="hw-popup-edit-inp" id="hpp-vak"><option value="">— vak —</option>${vakOpts}</select></div>
+      <div class="hw-popup-row"><span class="hw-popup-label">Opmerking:</span>
+        <input class="hw-popup-edit-inp" id="hpp-opm" type="text" maxlength="20" value="${h.opmerking||''}" placeholder="Optioneel"></div>
+      <div class="hw-popup-actions">
+        <button class="hw-popup-cancel-btn" id="hpp-cancel">Annuleren</button>
+        <button class="hw-popup-save-btn" id="hpp-save">Opslaan</button>
+      </div>`;
+    pop.querySelector('#hpp-cancel')?.addEventListener('click',renderView);
+    pop.querySelector('#hpp-save')?.addEventListener('click',()=>{
+      const vv=(pop.querySelector('#hpp-vak')?.value||'').trim();
+      const ov2=(pop.querySelector('#hpp-opm')?.value||'').trim().slice(0,20);
+      if(!vv){ alert('Selecteer een vak.'); return; }
+      h.vak=vv; h.opmerking=ov2;
+      persist();
+      if(_currentSchoolId) scheduleSbSync();
+      renderAllHwPictos();
+      renderHwTray();
+      ov.remove();
+    });
+  }
+  renderView();
+  ov.appendChild(pop);
+  ov.addEventListener('click',e=>{ if(e.target===ov) ov.remove(); });
+  document.body.appendChild(ov);
+}
+
+let _hwDropSetup=false;
+function _setupSchedAreaDrop(){
+  const area=document.getElementById('sched-area');
+  if(!area) return;
+  // Always re-attach (area.innerHTML is replaced each render)
+  area.addEventListener('dragover',e=>{
+    const cell=e.target.closest('.dc[data-hw-slot]');
+    if(!cell) return;
+    const cellDate=cell.dataset.hwDate;
+    if(!cellDate) return;
+    const today=toDS(new Date());
+    if(cellDate>today) return; // future not allowed
+    const key=cell.dataset.hwKey;
+    const di=cell.dataset.hwDi;
+    const slotId=cell.dataset.hwSlot;
+    const placed=(S.huiswerk||[]).filter(h=>h.slotId===slotId&&h.weekKey===key&&String(h.di)===String(di));
+    if(placed.length>=2) return; // max 2
+    e.preventDefault();
+    e.dataTransfer.dropEffect='move';
+    document.querySelectorAll('.dc.hw-drop-hover').forEach(c=>c.classList.remove('hw-drop-hover'));
+    cell.classList.add('hw-drop-hover');
+  });
+  area.addEventListener('dragleave',e=>{
+    const cell=e.target.closest('.dc[data-hw-slot]');
+    if(cell) cell.classList.remove('hw-drop-hover');
+  });
+  area.addEventListener('drop',e=>{
+    document.querySelectorAll('.dc.hw-drop-hover').forEach(c=>c.classList.remove('hw-drop-hover'));
+    const cell=e.target.closest('.dc[data-hw-slot]');
+    if(!cell) return;
+    const cellDate=cell.dataset.hwDate;
+    const today=toDS(new Date());
+    if(cellDate>today) return;
+    const key=cell.dataset.hwKey;
+    const di=cell.dataset.hwDi;
+    const slotId=cell.dataset.hwSlot;
+    const placed=(S.huiswerk||[]).filter(h=>h.slotId===slotId&&h.weekKey===key&&String(h.di)===String(di));
+    if(placed.length>=2) return;
+    const hwId=e.dataTransfer.getData('text/hw-id');
+    if(!hwId) return;
+    e.preventDefault();
+    const item=(S.huiswerk||[]).find(h=>h.id===hwId);
+    if(!item) return;
+    item.weekKey=key;
+    item.di=parseInt(di,10);
+    item.slotId=slotId;
+    persist();
+    if(_currentSchoolId) scheduleSbSync();
+    renderHwTray();
+    renderAllHwPictos();
+  });
+}
+
+let _hwTipEl=null;
+function _showHwTip(e){
+  const tip=e.currentTarget.dataset.tip;
+  if(!tip) return;
+  if(!_hwTipEl){
+    _hwTipEl=document.createElement('div');
+    _hwTipEl.className='hw-tip';
+    document.body.appendChild(_hwTipEl);
+  }
+  _hwTipEl.textContent=tip;
+  _hwTipEl.style.display='block';
+  const r=e.currentTarget.getBoundingClientRect();
+  _hwTipEl.style.left=(r.left+window.scrollX)+'px';
+  _hwTipEl.style.top=(r.top+window.scrollY-36)+'px';
+}
+function _hideHwTip(){
+  if(_hwTipEl) _hwTipEl.style.display='none';
+}
+
+let _hwRefreshing=false;
+
+/* ── Auto-refresh HW voor niet-leerling rollen ──────────────────────────
+   Bij tab-focus worden huiswerkkaarten herladen vanuit Supabase,
+   zodat coaches/coordinatoren/docenten altijd actuele data zien
+   ook als een leerling vlak daarvoor een kaart heeft aangemaakt.
+   ─────────────────────────────────────────────────────────────────────── */
+let _hwAutoRefreshInterval=null;
+function _startHwAutoRefresh(){
+  if(_hwAutoRefreshInterval) return; // al gestart
+  _hwAutoRefreshInterval=true; // markeer als gestart (geen interval meer — voorkomt 60s-race)
+  // Ververs bij terugkeer naar tabblad (veilig: altijd na idle netwerk)
+  document.addEventListener('visibilitychange',()=>{
+    if(!document.hidden&&S.role&&S.role!=='leerling'&&_currentSchoolId){
+      _doHwSpRefresh();
+    }
+  },{passive:true});
+}
+async function _doHwSpRefresh(){
+  if(_hwRefreshing) return;
+  // Extra guard: nooit uitvoeren voor leerling-rol (veiligheidsnet)
+  if(!S.role||S.role==='leerling') return;
+  _hwRefreshing=true;
+  // Snapshot VOOR de async spLoad — zodat kaarten die tijdens het laden geplaatst worden niet verloren gaan
+  const localSnapshot=[...(S.huiswerk||[])];
+  try{
+    const result=await spLoad();
+    // Rol kan zijn veranderd tijdens het laden (bijv. uitgelogd) — skip als nu leerling
+    if(result.ok && S.role && S.role!=='leerling'){
+      const raw=localStorage.getItem('wp_huiswerk');
+      if(raw){
+        const spHw=JSON.parse(raw);
+        const spIds=new Set(spHw.map(h=>h.id));
+        const localMap=new Map(localSnapshot.map(h=>[h.id,h]));
+        // Merge: neem SP-versie, maar behoud lokale versie als die al geplaatst is en SP nog niet
+        // (race condition: spSyncAll nog onderweg — 3s debounce — maar interval al afgelopen)
+        const merged=spHw.map(spItem=>{
+          const loc=localMap.get(spItem.id);
+          if(loc && loc.slotId && !spItem.slotId) return loc; // lokaal geplaatst, SP nog niet bijgewerkt
+          return spItem;
+        });
+        const localOnly=localSnapshot.filter(h=>!spIds.has(h.id));
+        S.huiswerk=[...merged,...localOnly];
+        if(localOnly.length||merged.some((m,i)=>m!==spHw[i])){
+          try{ localStorage.setItem('wp_huiswerk',JSON.stringify(S.huiswerk)); }catch(e){}
+        }
+      }
+      renderAllHwPictos(true);
+    }
+  }catch(e){}
+  _hwRefreshing=false;
+}
+
+function renderAllHwPictos(skipRefresh=false){
+  // Coaches/coordinators/docenten/ouders: stille achtergrond-refresh van wp_huiswerk via volledige spLoad
+  if(!skipRefresh && S.role!=='leerling' && _currentSchoolId && !_hwRefreshing){
+    _hwRefreshing=true;
+    const _localSnap=[...(S.huiswerk||[])]; // snapshot vóór async spLoad
+    spLoad().then(result=>{
+      _hwRefreshing=false;
+      if(result.ok){
+        const raw=localStorage.getItem('wp_huiswerk');
+        if(raw){
+          try{
+            const spHw=JSON.parse(raw);
+            const spIds=new Set(spHw.map(h=>h.id));
+            const localMap=new Map(_localSnap.map(h=>[h.id,h]));
+            // Merge: neem SP-versie, maar behoud lokale geplaatste kaart als SP nog niet bijgewerkt is
+            const merged=spHw.map(spItem=>{
+              const loc=localMap.get(spItem.id);
+              if(loc && loc.slotId && !spItem.slotId) return loc;
+              return spItem;
+            });
+            const localOnly=_localSnap.filter(h=>!spIds.has(h.id));
+            S.huiswerk=[...merged,...localOnly];
+          }catch(e){}
+        }
+        renderAllHwPictos(true); // hertekenen met verse data
+      }
+    }).catch(()=>{ _hwRefreshing=false; });
+  }
+  // Remove any existing picto wraps
+  document.querySelectorAll('.hw-pictos-wrap').forEach(el=>el.remove());
+  if(!S.currentStudentId) return;
+  const isLeerling=S.role==='leerling';
+  const placed=(S.huiswerk||[]).filter(h=>h.studentId===S.currentStudentId && h.slotId!==null);
+  // Group by weekKey+di+slotId
+  const grouped={};
+  placed.forEach(h=>{
+    const k=h.weekKey+'|'+h.di+'|'+h.slotId;
+    if(!grouped[k]) grouped[k]=[];
+    grouped[k].push(h);
+  });
+  Object.entries(grouped).forEach(([k,items])=>{
+    const cell=document.querySelector(`.dc[data-hw-key="${items[0].weekKey}"][data-hw-di="${items[0].di}"][data-hw-slot="${items[0].slotId}"]`);
+    if(!cell) return;
+    if(getComputedStyle(cell).position==='static') cell.style.position='relative';
+    const wrap=document.createElement('div');
+    wrap.className='hw-pictos-wrap';
+    items.slice(0,2).forEach((h)=>{
+      const dot=document.createElement('span');
+      dot.className='hw-picto-dot'+(isLeerling?' hw-leerling-own':'');
+      // Book icon + HW [vak] badge
+      const book=document.createElement('span');
+      book.className='hw-picto-book';
+      book.textContent='📖';
+      const badge=document.createElement('span');
+      badge.className='hw-picto-badge';
+      badge.textContent='HW'+(h.vak?' '+h.vak:'');
+      dot.appendChild(book);
+      dot.appendChild(badge);
+      // Tooltip
+      const tipLines=[h.vak?'HW '+h.vak:'HW'];
+      if(h.opmerking) tipLines.push(h.opmerking);
+      dot.dataset.tip=tipLines.join('\n');
+      dot.addEventListener('mouseenter',_showHwTip);
+      dot.addEventListener('mouseleave',_hideHwTip);
+      // Click → detail popup (all roles can view; leerling can also edit/delete)
+      dot.style.cursor='pointer';
+      dot.addEventListener('click',()=>_openHwPopup(h.id));
+      wrap.appendChild(dot);
+    });
+    cell.appendChild(wrap);
+  });
+}
+
 /* ══ STD SCHEDULE MODAL ═════════════════════════════ */
 function openStdModal(){
   if(!S.currentStudentId){alert('Selecteer eerst een leerling.');return;}
   const sd=curData();
   S.tmpStd=JSON.parse(JSON.stringify(sd.std||{}));
   S.tmpStdTimes=JSON.parse(JSON.stringify(sd.std?.times||{}));
+  S.tmpStdVak=JSON.parse(JSON.stringify(sd.std?.vakken||{}));
   const stu=S.students.find(s=>s.id===S.currentStudentId);
   document.getElementById('std-modal-sub').innerHTML=
     'Standaardrooster voor <strong>'+(stu?stu.name:'leerling')+'</strong>.<br>'
-    +'1× Aanwezig &nbsp;·&nbsp; 2× Afwezig &nbsp;·&nbsp; 3× Vrij/verlof &nbsp;·&nbsp; 4× Toernooi &nbsp;·&nbsp; 5× Leeg';
+    +'Klik op een kleur · kies bij groen ook het vak';
   renderStdGrid();
   document.getElementById('modal-std').classList.add('show');
 }
@@ -5939,32 +7137,51 @@ function saveStd(){
   const d=curData();
   d.std=JSON.parse(JSON.stringify(S.tmpStd));
   d.std.times=JSON.parse(JSON.stringify(S.tmpStdTimes));
+  d.std.vakken=JSON.parse(JSON.stringify(S.tmpStdVak));
   persist(); closeStdModal(); renderSchedule();
 }
 function _buildStdPicker(cell, currentColor, di, slotId){
-  // Dots row
+  // Dots row — alleen Aanwezig/Training/Overig/Rust (+ leeg); Wedstrijd/Toets/Toernooi via weekplanning
   const picker=document.createElement('div');
   picker.className='sdc-picker';
-  _PICKER_COLORS.forEach(clr=>{
+  _STD_PICKER_COLORS.forEach(clr=>{
     const dot=document.createElement('div');
     dot.className='cell-picker-dot'+(clr===currentColor?' active':'')+(clr===null?' dot-empty':'');
     if(clr) dot.style.cssText=`background:${_PICKER_BG[clr]};border-color:${_PICKER_BD[clr]};`;
-    dot.title=clr?(COLOR_LBL[clr]||clr):'Leeg';
+    dot.title=clr?(STD_LBL[clr]||clr):'Leeg';
     dot.addEventListener('click',(e)=>{
       e.stopPropagation();
       if(!S.tmpStd[di]) S.tmpStd[di]={};
       S.tmpStd[di][slotId]=clr;
+
       applyStd(cell,clr);
       _buildStdPicker(cell,clr,di,slotId);
     });
     picker.appendChild(dot);
   });
+  // Vak-dropdown — altijd zichtbaar, vaste lijst ongeacht statuskleur
+  const _STD_VAK_LIST=['NE','EN','DU','FA','AK','GS','EC','BEC','BI','NA','SK','Wi','WiA','WiB','MA'];
+  const vakSel=document.createElement('select');
+  vakSel.className='sdc-vak-sel';
+  vakSel.title='Vak voor dit lesuur';
+  const optEmpty=document.createElement('option'); optEmpty.value=''; optEmpty.textContent='— Les —';
+  vakSel.appendChild(optEmpty);
+  _STD_VAK_LIST.forEach(v=>{ const o=document.createElement('option'); o.value=v; o.textContent=v; vakSel.appendChild(o); });
+  const curVak=(S.tmpStdVak[di]&&S.tmpStdVak[di][slotId])||'';
+  vakSel.value=curVak;
+  vakSel.addEventListener('change',(e)=>{
+    e.stopPropagation();
+    if(!S.tmpStdVak[di]) S.tmpStdVak[di]={};
+    if(vakSel.value) S.tmpStdVak[di][slotId]=vakSel.value;
+    else delete S.tmpStdVak[di][slotId];
+    lbl.textContent=_stdCellLabel(currentColor,curTime,vakSel.value);
+  });
   // Label below dots
   const lbl=document.createElement('div');
   lbl.className='sdc-lbl';
   const curTime=(S.tmpStdTimes[di]&&S.tmpStdTimes[di][slotId])||'';
-  lbl.textContent=(STD_LBL[currentColor||'null']||'—')+(curTime?' ('+curTime+')':'');
-  // Time input below label
+  lbl.textContent=_stdCellLabel(currentColor,curTime,curVak);
+  // Time input
   const timeInp=document.createElement('input');
   timeInp.type='time'; timeInp.className='sdc-time-inp';
   timeInp.value=curTime;
@@ -5974,16 +7191,22 @@ function _buildStdPicker(cell, currentColor, di, slotId){
     if(!S.tmpStdTimes[di]) S.tmpStdTimes[di]={};
     if(timeInp.value) S.tmpStdTimes[di][slotId]=timeInp.value;
     else delete S.tmpStdTimes[di][slotId];
-    // Update label live
-    lbl.textContent=(STD_LBL[currentColor||'null']||'—')+(timeInp.value?' ('+timeInp.value+')':'');
+    lbl.textContent=_stdCellLabel(currentColor,timeInp.value,(S.tmpStdVak[di]&&S.tmpStdVak[di][slotId])||'');
   });
-  // Remove old picker + label + time input
+  // Remove old elements
   cell.querySelector('.sdc-picker')?.remove();
+  cell.querySelector('.sdc-vak-sel')?.remove();
   cell.querySelector('.sdc-lbl')?.remove();
   cell.querySelector('.sdc-time-inp')?.remove();
   cell.appendChild(picker);
+  cell.appendChild(vakSel);
   cell.appendChild(lbl);
   cell.appendChild(timeInp);
+}
+function _stdCellLabel(clr, time, vak){
+  let base=STD_LBL[clr||'null']||'—';
+  if(clr==='green'&&vak) base='Les: '+vak;
+  return base+(time?' ('+time+')':'');
 }
 
 function renderStdGrid(){
@@ -6120,9 +7343,8 @@ function openToetsModal(key, di, slot, slots, dates){
   document.getElementById('toets-search').value = '';
   document.getElementById('toets-results').style.display = 'none';
   document.getElementById('toets-selected').innerHTML = '';
-  document.getElementById('toets-no-m365').style.display = 'none';
 
-  document.getElementById('toets-send-btn').textContent = '✉️ Mail sturen & opslaan';
+  document.getElementById('toets-send-btn').textContent = 'Opslaan';
 
   _refreshToetsMsg();
   document.getElementById('toets-err').style.display = 'none';
@@ -6162,28 +7384,9 @@ function _refreshToetsMsg(){
 }
 
 async function onToetsSearch(query){
-  clearTimeout(_toetsSearchTimer);
+  // Zoekfunctie via Microsoft Graph is niet beschikbaar in de Supabase-versie
   const results = document.getElementById('toets-results');
-  if(!query || query.length < 2){ results.style.display='none'; return; }
-  _toetsSearchTimer = setTimeout(async()=>{
-    results.style.display='none'; return; // docenten zoeken via M365 niet beschikbaar
-    results.innerHTML='<div class="toets-result-item" style="color:var(--muted)">Zoeken…</div>';
-    results.style.display='';
-    const data = null; // Docenten zoeken via M365 niet beschikbaar in Supabase-versie
-    results.innerHTML='';
-    const users = (data?.value||[]).filter(u=>u.mail);
-    if(users.length===0){
-      results.innerHTML='<div class="toets-result-item" style="color:var(--muted)">Geen resultaten.</div>';
-      return;
-    }
-    users.forEach(u=>{
-      const item=document.createElement('div');
-      item.className='toets-result-item';
-      item.innerHTML=`<span class="toets-result-name">${u.displayName}</span><span class="toets-result-mail">${u.mail}${u.jobTitle?' &nbsp;·&nbsp; '+u.jobTitle:''}</span>`;
-      item.addEventListener('click',()=>_selectToetsUser(u));
-      results.appendChild(item);
-    });
-  }, 320);
+  if(results) results.style.display = 'none';
 }
 
 function _selectToetsUser(user){
@@ -6269,36 +7472,6 @@ async function confirmToetsMail(){
   const errEl=document.getElementById('toets-err');
   errEl.style.display='none';
 
-  // Send mail if M365 connected and recipients selected
-  if(_toetsRecipients.length === 0){ // mail tijdelijk uitgeschakeld, was M365-only
-    errEl.textContent='Selecteer minimaal één ontvanger om de mail naar te sturen.';
-    errEl.style.display='';
-    return;
-  }
-
-  if(false && _toetsRecipients.length > 0){ // mail niet beschikbaar zonder M365
-    document.getElementById('toets-send-btn').textContent='⏳ Versturen…';
-    const stu = S.students.find(s=>s.id===S.currentStudentId);
-    const stuName = stu?.name||'leerling';
-    const payload={
-      message:{
-        subject:`Toets ingepland — ${stuName}`,
-        body:{ contentType:'Text', content: document.getElementById('toets-msg').value },
-        toRecipients: _toetsRecipients.map(r=>({ emailAddress:{ address:r.mail, name:r.displayName }})),
-      },
-      saveToSentItems:true,
-    };
-    const res = null; // Mail via M365 niet beschikbaar in Supabase-versie
-    if(res===null){
-      errEl.textContent='Mail kon niet worden verstuurd (niet beschikbaar in deze versie).';
-      errEl.style.display='';
-      document.getElementById('toets-send-btn').textContent='✉️ Mail sturen & opslaan';
-      return;
-    }
-    setSyncChip('ok','📋 Opgeslagen');
-    setTimeout(()=>setSyncChip('idle','☁️ Sync'),3000);
-  }
-
   // Save subject + duration + coverage
   _applyToets();
   document.getElementById('modal-toets').classList.remove('show');
@@ -6320,11 +7493,14 @@ function cancelToets(){
 
 /* ══ INIT ════════════════════════════════════════════ */
 (async()=>{
-  // 1. Supabase initialiseren + auth callback afhandelen
+  // Supabase auth initialiseren + data laden indien ingelogd
   await sbInit();
-  // 2. Hydrate state from localStorage
+  // Hydrate state from localStorage
   hydrate();
   applySchoolName();
   applySchoolLogo();
+  // Show Display login button if a display password is set
+  const dw=document.getElementById('btn-display-login-wrap');
+  if(dw) dw.style.display=S.displayPassword?'':'none';
 })();
 </script>
